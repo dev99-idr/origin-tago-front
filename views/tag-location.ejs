@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+        <!--<script src="../public/javascripts/tag-location-action.js"></script>-->
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <!-- <h4 class="page-title" style="cursor:default;">Location</h4> -->
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card card-with-nav">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-6">
+                                <a class="nav-link" style="font-weight: bold; font-size: medium; padding: 10px; cursor:default;">Location Group List</a>
+                                </div>
+                                <div class="col-md-6" style="text-align: right; padding: 0px 20px;">
+                                    <button class="btn btn-success btn-sm" id="addLocationBtn"><i class="la la-plus"></i></button>
+                                    <button class="btn btn-success btn-sm" id="deleteLocationBtn"><i class="la la-minus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <nav aria-label="breadcrumb">
+                                <div class="form-group form-group-default" id="fistLocation">
+                                    <div class="row">
+                                        <div class="col-md-10" style="padding: 0px">
+                                            <input type="text" class="form-control" id="inputLocation" placeholder="<%=__('Please enter the company name')%>">
+                                        </div>
+                                        <div class="col-md-2" style="padding: 0px">
+                                            <button class="btn btn-success" id="inputLocationBtn"><i class="la la-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </nav>
+                            <div id="tree">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card card-with-nav">
+                        <div class="card-header">
+                            <span class="nav-link" id="thingTypeName" style="font-weight: bold; font-size: medium; padding: 10px; cursor:default;">Thing Type<span>
+                        </div>
+                        <div class="card-body">
+                            <div id="statusLine" style="display: none;"></div>
+                            <div class="row">
+                                <div class="col-md-6" style="cursor: default; padding: 5px 0px 0px 25px;">
+                                    <div style="display: inline;">
+                                        <b style="font-size: medium;"><%=__('Total')%>
+                                            <span id="countThingType">0</span>
+                                            </b>
+                                    </div>
+                                    <div style="display: inline; padding: 0px 10px;">
+                                        show
+                                        <select class="form-control form-control-sm" id="selectPerPage" style="width: 60px; display: inline; cursor: pointer;">
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                        </select>
+                                        entries
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style=" padding: 0 25px 0px 0px;">
+                                    <div class="input-group" style="width: 350px; float: right;">
+                                        <select class="form-control form-control-sm" id="tagSearchCriteria" style="width: 80px; height: 34px; display: inline; cursor: pointer;">
+                                            <option value="tag_name"><%=__('Tag name')%></option>
+                                            <option value="tag_location"><%=__('Location')%></option>
+                                        </select>
+                                        <input class="form-control form-control-sm" id ="tagSearchText" type="text" placeholder="<%=__('Search word')%>" style="width: 150px; margin: 0px; display: inline;">
+                                        <button class="btn btn-success btn-sm" id="tagSearchBtn" style="display: inline;"><%=__('Search')%></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <table class="table table-head-bg-success">
+                                    <thead>
+                                        <tr>
+                                            <th>Number</th>
+                                            <th>Smart Tag Name</th>
+                                            <th>Thing ID</th>
+                                            <th>Location</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tagList">
+                                        <tr>
+                                            <td><%=__('Select a location group on the left')%></td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div id="pagination">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <script>
+            <%-include('../public/javascripts/tag-location-action.js') %>
+        </script>
+
+    </body>
+</html>

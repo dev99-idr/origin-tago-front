@@ -1,0 +1,264 @@
+<script src="../public/javascripts/tag-register-front-action.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+
+<div class="container-fluid">
+    <!-- <h4 class="page-title">Tag Registration</h4> -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" >
+                <div class="card-header">
+                    <div class="card-title">태그 등록</div>
+                </div>
+
+                <div class="card-body">
+                    <form id="msform">
+                        <div id="progressbar" class="col-md-12">
+                            <li style="color:black;z-index: 50;" class="active col-md-4 mb-4">Common Informations</li>
+                            <li style="color:black;z-index: 49;" class="col-md-4 mb-4">Collection / Command Data</li>
+                            <li style="color:black;z-index: 47;" class="col-md-4 mb-4">Connect Tag Layout</li>
+                        </div>
+                        <fieldset class="allData">
+                            <!-- <label class="float-right btn btn-success" for="uploadExcelBtn">엑셀로 업로드</label> -->
+                            <input type="file" id="uploadExcelBtn" style="display:none;">
+                            <h2 class="fs-title">스마트 태그 공통 데이터</h2>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="float-left">태그 제품</label>
+                                    <select type="select" id="smartTagProduct" class="col-md-12 form-control form-control input-pill">
+                                        <option value="IDR">IDR</option>
+                                        <option value="Cronus">Cronus</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="float-left">태그 크기</label>
+                                    <select type="select" id="smartTagSize" class="col-md-12 form-control form-control input-pill">
+                                        <option value="2.9">2.9</option>
+                                        <option value="4.2">4.2</option>
+                                        <option value="7.5">7.5</option>
+                                        <option value="10.2">10.2</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="float-left">스마트태그 Type</label>
+                                    <select type="select" id="smartTagType" class="col-md-12 form-control form-control input-pill">
+                                    </select>
+                                </div>
+                                <div class="col-md-6"><label class="float-left">Smart Tag Name</label><input type="text" class="form-control input-pill" name="commonData" id="tagName" placeholder="스마트태그 이름" ></div>
+                                <div class="col-md-6"><label class="float-left">Serial Number</label><input type="text" class="form-control input-pill" name="commonData" id="tagSerialNumber" placeholder="시리얼 넘버" ></div>
+                                <div class="col-md-6"><label class="float-left">Thing ID</label><input type="text" class="form-control input-pill" name="commonData" id="tagThingId" readonly></div>
+                                <div class="col-md-6"><label class="float-left">Location Info</label><input type="text" class="form-control input-pill" name="commonData" id="tagLocation" placeholder="위치 정보"></div>
+                                <div class="col-md-6">
+                                    <label class="float-left">외부 application 연동</label>
+                                    <select type="select" id="thirdParty" class="col-md-12 form-control form-control input-pill">
+                                        <option selected value="none">선택 안함</option>
+                                        <option value="ams">유연적시</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 d-none"><label class="float-left">수집 주기</label><input value="1" type="text" class="form-control input-pill" name="commonData" id="tagWakeupPrd" placeholder="수집 주기 (초)" ></div>
+                            </div>
+                            <button type="button" name="cancel" class="cancel float-left  btn btn-danger">취소</button>
+                            <button type="button" name="next" class="float-right next  btn btn-success">다음</button>
+                        </fieldset>
+                        <fieldset>
+                            <h2 class="fs-title">스마트 태그 수집/명령 데이터</h2>
+                            <table  class="table table-hover small-text" id="tbCollection">
+                                <tr class="tr-header">
+                                    <th>Data Name</th>
+                                    <th>Data Key</th>
+                                    <th>Data 단위</th>
+                                    <th>Data Type</th>
+                                    <th>Data 종류</th>
+
+                                    <th class="d-none">Data Period Type</th>
+                                    <th><a href="javascript:void(0);" style="font-size:18px;" id="addMoreCollection" >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-plus" viewBox="0 0 16 16">
+                                        <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                                      </svg></a>
+                                    </th>
+                                </tr>
+                                <tr class="collectionData">
+                                    <td><input type="text" name="collectionDataName" class="form-control input-pill" placeholder="수집 데이터 명"></td>
+                                    <td><input type="text" name="collectionDataKey"  class="form-control input-pill" placeholder="수집 데이터 키"></td>
+                                    <td><input type="text" name="collectionDataUnit" class="form-control input-pill" placeholder="수집 데이터 단위" value="-"></td>
+                                    <td>
+                                        <select type="select" name="collectionDataType" class="form-control input-pill">
+                                            <option value="String" selected>String</option>
+                                            <option value="Number">Double</option>
+                                            <option value="Int">Int</option>
+                                            <option value="Boolean">Boolean</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select type="select" name="collectionDataCategory" class="form-control input-pill "  style="background-color: #fff !important; height: 100%;">
+                                            <option value="collection" selected>수집</option>
+                                            <option value="command">명령</option>
+                                        </select>
+                                    </td>
+                                    <td class="d-none">
+                                        <select name="collectionDataPeriodType" class="form-control input-pill">
+                                            <option value="Periodic">Periodic</option>
+                                            <option value="Aperiodic">Aperiodic</option>
+                                        </select>
+                                    </td>
+
+                                    <td><a href='javascript:void(0);'  class='remove'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-minus" viewBox="0 0 16 16">
+                                        <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+                                        <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                                      </svg>
+                                    </td>
+                                </tr>
+                            </table>
+                            <button type="button" name="cancel" class="cancel float-left  btn btn-danger">취소</button>
+                            <button type="button" name="next" class="float-right next  btn btn-success">다음</button>
+                            <button type="button" name="previous" class="float-right previous  btn btn-success">이전</button>
+
+                        </fieldset>
+                        <!-- <fieldset class="d-none">
+                            <h2 class="fs-title">스마트 태그 명령 데이터</h2>
+                            <table  class="table table-hover small-text" id="tbCommand">
+                                <tr class="tr-header">
+                                    <th>Data Name</th>
+                                    <th>Data Key</th>
+                                    <th>Data 단위</th>
+                                    <th>Data Type</th>
+                                    <th><a href="javascript:void(0);" style="font-size:18px;" id="addMoreCommand" >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-plus" viewBox="0 0 16 16">
+                                        <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                                      </svg></a>
+                                    </th>
+                                </tr>
+                                <tr class="commandData">
+                                    <td><input type="text" name="commandDataName"  class="form-control" placeholder="명령 데이터 명"></td>
+                                    <td><input type="text" name="commandDataKey" class="form-control" placeholder="명령 데이터 키"></td>
+                                    <td><input type="text" name="commandDataUnit" class="form-control" placeholder="명령 데이터 단위"></td>
+                                    <td>
+                                        <select name="commandDataType" class="form-control">
+                                            <option value="Number" selected>Number</option>
+                                            <option value="String">String</option>
+                                            <option value="Boolean">Boolean</option>
+                                        </select>
+                                    </td>
+                                    <td><a href='javascript:void(0);'  class='remove'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-minus" viewBox="0 0 16 16">
+                                        <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+                                        <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                                      </svg>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <button type="button" name="previous" class="previous  btn btn-success">이전</button>
+                            <button type="button" name="next" class="next  btn btn-success">다음</button>
+                        </fieldset> -->
+                        <fieldset>
+                            <h2 class="fs-title">연결된 태그 레이아웃</h2>
+                            <table id="selectedLayoutTable" class="table table-head-bg-success">
+                                <thead>
+                                    <tr>
+                                        <th>Page 1</th>
+                                        <th>Page 2</th>
+                                        <th>Page 3</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="selectedLayoutBody">
+                                    <tr>
+                                        <td id="selectedLayout_1" style="width: 296px;">
+                                            <a href="javascript:void(0);" style="font-size:18px;" id = "selectLayout_1" name="selectLayout" >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-plus" viewBox="0 0 16 16">
+                                                <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+                                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                        <td id="selectedLayout_2" style="width: 296px;">
+                                            <a href="javascript:void(0);" style="font-size:18px;" id = "selectLayout_2" name="selectLayout" >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-plus" viewBox="0 0 16 16">
+                                                <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+                                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                        <td id="selectedLayout_3" style="width: 296px;">
+                                            <a href="javascript:void(0);" style="font-size:18px;" id = "selectLayout_3" name="selectLayout" >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-plus" viewBox="0 0 16 16">
+                                                <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+                                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" name="cancel" class="cancel float-left  btn btn-danger">취소</button>
+                            <button type="button" name="submit" class="float-right submit  btn btn-success">완료</button>
+                            <button type="button" name="previous" class="float-right previous  btn btn-success">이전</button>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="card-footer" style="margin:0 auto">
+                    <div id="pagingId" class="pagination "></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade show" id="taglayoutListModal" tabindex="-1" role="dialog" aria-labelledby="tagRegisterModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="tagRegisterTitle">태그 레이아웃 연결 - Page<span id="pageLayoutNumber">0</span></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+                <table id="tagLayoutLsist" class="table table-head-bg-success">
+                    <thead>
+                        <tr>
+                            <th class="after-none">선택</th>
+                            <th>Preview</th>
+                            <th>Tag Layout Name</th>
+                            <th>Size</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tagLayoutLsistBody">
+                    </tbody>
+                </table>
+            </div>
+			<div class="modal-footer d-none">
+				<!-- <button type="button" class="btn btn-success" id="selectLocationBtn" data-dismiss="modal" aria-label="Close">Select</button> -->
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="tagRegisterModal" tabindex="-1" role="dialog" aria-labelledby="tagRegisterModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="tagLocationTitle">Location</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="tagLocationBody">
+            </div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" id="selectLocationBtn" data-dismiss="modal" aria-label="Close">Select</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+    .previous{
+        margin-right: 10px;
+    }
+</style>

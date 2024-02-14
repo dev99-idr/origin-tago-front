@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+        <!--<script src="../public/javascripts/system-information-action.js"></script>-->
+ 
+        <script>
+            <%-include('../public/javascripts/system-information-action.js') %>
+        </script>
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <!-- <h4 class="page-title" style="cursor:default;">System Information</h4> -->
+            
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="packageVersionTab">Package Version</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="releaseDataTab">Release Data</button>
+                </li>
+            </ul>
+
+            <div class="card card-with-nav" id="packageVersion">
+                <div class="card-header">
+                    <span class="nav-link" style="font-weight: bold; font-size: medium; padding: 10px; cursor:default;">Version<span>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <table class="table table-head-bg-success">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50%;">Version</th>
+                                    <th style="width: 50%;">Release Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="packageList">
+                                <tr>
+                                    <td>-</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div id="packagePagination">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-with-nav" id="releaseData" style="display: none;">
+                <div class="card-header">
+                    <span class="nav-link" style="font-weight: bold; font-size: medium; padding: 10px; cursor:default;">Release<span>
+                </div>
+                <div class="card-body">
+                    <div class="form-group" id="releaseList">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

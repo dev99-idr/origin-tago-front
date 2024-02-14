@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    <div class="container-fluid">
+        <!-- <h4 class="page-title" style="cursor:default;">Accounts </h4> -->
+        <div class="row">
+            <div class="col">
+                <div class="card card-with-nav">
+
+                    <div class="card-header">
+                        <span class="nav-link" id="thingTypeName" style="font-weight: bold; font-size: medium; padding: 10px; cursor:default;">Accounts<span>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3" style="cursor: default; padding: 5px 0px 0px 25px;">
+                                <div style="display: inline; cursor:default; font-size: medium;">
+                                    <b><%= __('Total')%>
+                                    <span id="countUser"></span>
+                                    </b>
+                                </div>
+                                <div style="display: inline; padding: 0px 10px;">
+                                    show
+                                    <select id="selectPerPage" class="form-control form-control-sm" style="display: inline; width: 60px; cursor: pointer;">
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                    </select> 
+                                    entries
+                                </div>
+                            </div>
+                            <div class="col-md-9" style="cursor: default; text-align: right; padding: 0 30px; ">
+                                <button class="btn btn-success" id="userAddBtn"><%= __('Add User')%></button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <div class="form-group">
+                                <table id="smartTagList" class="table table-head-bg-success">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 10%; display: none;"><%= __('Choice')%></th>
+                                            <th style="width: 30%;">ID</th>
+                                            <th style="width: 30%;">Name</th>
+                                            <th style="width: 30%;">Authority</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="accountsInfo">
+                                    </tbody>
+                                </table>
+                                <div class="text-center" id="accountPageBtn">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+<%-include('../public/javascripts/accounts-action.js') %>
+</script>

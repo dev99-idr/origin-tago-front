@@ -1,0 +1,23 @@
+module.exports = {
+    macAddress :  "48-51-C5-E3-87-C2",
+    mqttHost : "1.214.18.246",
+    //ipAddress : "http://localhost",
+    ipAddress : "http://112.216.113.42",
+    //apiServerUrl : "http://127.0.0.1:8083",          
+    //frontserverUrl : "http://127.0.0.1:8084",    
+    apiServerUrl : "http://112.216.113.42:8083",          
+    frontserverUrl : "http://112.216.113.42:8084",  
+    mqttIpAddress : "1.214.18.246",              
+    mqttport : 9011,  
+    makeImageServerUr : "http://1.214.18.246:18080",
+    sendImageServerUrl_CZTAG : "http://1.214.18.246:18081",
+    sendImageServerUrl_CWTAG : "http://1.214.18.246:18082",
+    backgroundImagePath : "D:/Tago/tago-front/resource/tagBackground",
+    ultraServerIP : "http://1.214.18.246:7579/Ultra/",
+    thingwaveServerIP : "http://1.214.18.246:8090/ApiMain",
+    webSocketServerIP : "ws://localhost:8083",
+    //runningMode : "debug",
+    //javascriptMode : "debug"
+    runningMode : "",
+    javascriptMode : ""
+}

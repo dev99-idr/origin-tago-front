@@ -1,0 +1,172 @@
+<!-- <script src="../public/javascripts/tag-publish-front-action.js"></script> -->
+
+<div class="container-fluid">
+    <!-- <h4 class="page-title">Tag Publish</h4> -->
+    <!-- '../resource/officeFile/testdoc.doc' -->
+    <div class="row">
+        <!-- <iframe src="../resource/officeFile/testpdf.pdf" width='1366px' height='623px' ></iframe>
+        <iframe src='https://view.officeapps.live.com/op/embed.aspx?src=http://www.learningaboutelectronics.com/Articles/NP-modernization-act-new-york-state.doc' width='80%' height='565px' frameborder='0'> </iframe> -->
+
+    <!-- </iframe> -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Form List</div>
+                </div>
+                <div class="card-body" style="display: flex; align-items: center;">
+                    <div class="flex col-md-4">
+                        <label class="mr-3" for="IpAddress">IP</label>
+                        <input class="form-control" id="IpAddress" value="112.216.113.42">
+                    </div>
+                    <div class="flex col-md-4">
+                        <label class="mr-3" for="PortNumber">Port</label>
+                        <input class="form-control" id="PortNumber" value="8090">
+                    </div>
+                    <div class="flex col-md-4">
+                        <button class="w-100 btn btn-success" id="loadformbtn" value="0" >Load Form</button>
+                    </div>
+
+               </div>
+                <div class="card-body" style="max-height:65vh;overflow-y: auto;">
+                    
+                    <div class="form-group">
+                        <table class="table table-head-bg-success">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width: 50%;">Form Group Name</th>
+                                    <th scope="col" style="width: 50%;">Form Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select class="form-control form-control-sm" type="text" id="formgroupName"></select>
+                                    </td>
+                                    <td>
+                                        <select class="form-control form-control-sm" type="text" id="formName"></select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table id="fromlist" class="table table-head-bg-success">
+                            <thead>
+                                <tr>
+                                    <th><%=__('Select')%></th>
+                                    <th><%=__('Form Preview')%></th>
+                                    <th><%=__('Form name')%></th>
+                                    <th><%=__('Form Group name')%></th>
+                                    <th><%=__('Data Set name')%></th>
+                                    <th>Size</th>
+                                </tr>
+                            </thead>
+                            <tbody id="formlistBody">
+                                <tr>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer" style="margin:0 auto">
+                    <div id="pagingId" class="pagination "></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Form Preview</div>
+                </div>
+                <div align="center" class="row mt-3" id="middle">
+                    <div id="canvasid" style="width:100%; height: 100%; border: 0px; ">
+                        <div style="vertical-align: middle; border: 0px; ">
+                            <canvas id="canvas" style="border: 1px solid black;  "></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body" id="cardBody" style="max-height:65vh;overflow-y: auto;">
+                    <hr>
+
+                    <div class="card-title">Tag informations</div>
+                    <hr>
+                    <div class="row" id="dataKeyBalueField">
+                        <div class="col-4">
+                            <label for="RequestType" class="bold control-label mb-1">Data Key 1</label>
+                            <input id="RequestType" name="RequestType" class="form-control cc-exp" value=""
+                                data-val="true" data-val-required="Please enter the card expiration"
+                                data-val-cc-exp="Please enter a valid month and year" autocomplete="cc-exp">
+                            <span class="help-block" data-valmsg-for="RequestType"
+                                data-valmsg-replace="true"></span>
+                        </div>
+                        <div class="col-4">
+                            <label for="IpAddres111" class="control-label mb-1">Data Key 2</Address></label>
+                            <div class="input-group">
+                                <input id="IpAddres111" name="IpAddres111" class="form-control cc-cvc" value=""
+                                    data-val="true" data-val-required="Please enter the security code"
+                                    data-val-cc-cvc="Please enter a valid security code" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <label for="PortNumber111" class="control-label mb-1">Data Key 3</Address></label>
+                            <div class="input-group">
+                                <input id="PortNumber111" name="PortNumber111" class="form-control cc-cvc" value=""
+                                    data-val="true" data-val-required="Please enter the security code"
+                                    data-val-cc-cvc="Please enter a valid security code" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="bold">TAG Request information
+                        <hr>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="thingId" class="bold control-label mb-1">Thing ID</label>
+                                <div class="input-group">
+                                    <input id="thingId" name="thingId" class="form-control cc-cvc" value="WTAG_2020000"
+                                        data-val="true" data-val-required="Please enter the security code"
+                                        data-val-cc-cvc="Please enter a valid security code" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <label for="pageNumber" class="bold control-label mb-1">Page Number</label>
+                                <div class="input-group">
+                                    <input id="pageNumber" name="pageNumber" class="form-control cc-cvc" value="1"
+                                        data-val="true" data-val-required="Please enter the security code"
+                                        data-val-cc-cvc="Please enter a valid security code" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer" style="padding: 3% 3% 3% 3%;">
+                    <div class="col-12" >
+                        <div class="row">
+                            <input type="button" id="tagPublishBtn" value="Preview"
+                                class="btn btn-lg btn-success btn-block radius">
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-6" style="padding: 2px;">
+                                <input type="button" id="tagSaveBtn" value="Save To Local"
+                                class="btn btn-lg btn-success btn-block radius">
+                            </div>
+                            <div class="col-lg-6" style="padding: 2px;">
+                                <input type="button" id="tagSaveBtn2" value="Save On Server"
+                                class="btn btn-lg btn-success btn-block radius">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    <%-include('../public/javascripts/tag-publish-front-action.js') %>
+</script>

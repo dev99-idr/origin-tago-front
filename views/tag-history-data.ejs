@@ -1,0 +1,112 @@
+<!--<script src="../public/javascripts/tag-history-front-action.js"></script>-->
+
+
+
+<div class="container-fluid root">
+    <!-- <h4 class="page-title">History Data</h4> -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">History Data List</div>
+                </div>
+                <div class="card-body row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label><%=__('Data Kind')%></label>
+                                <div class="input-group">
+                                    <div class="col-md-12 d-flex align-items-center">
+                                        <div class="col-md-6 custom-control custom-radio">
+                                            <input type="radio" id="collectionData" name="dataCategory"
+                                                class="custom-control-input" checked>
+                                            <label class="custom-control-label" for="collectionData"><%=__('Collected data')%></label>
+                                        </div>
+                                        <div class="col-md-6 custom-control custom-radio">
+                                            <input type="radio" id="controlData" name="dataCategory"
+                                                class="custom-control-input">
+                                            <label class="custom-control-label" for="controlData"><%=__('Command Data')%></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6  pl-3">
+                                <label><%=__('Search time')%></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="fromDate">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="la la-calendar-check-o"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                            <div class="col-md-6 pl-3">
+                                <label>&nbsp;</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control " id="toDate">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="la la-calendar-check-o"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 pl-3 ">
+                                <label>Thing ID</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="thingIdInput">
+                                    <div class="input-group-append">
+                                        <span id="searchBtn" class="input-group-text cursor-pointer">
+                                            <i class="la la-search"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <table id="smartTagList" class="table table-head-bg-success">
+                            <thead>
+                                <tr>
+                                    <th>Thing ID</th>
+                                    <th><%=__('Data Name')%></th>
+                                    <th><%=__('Value')%></th>
+                                    <th><%=__('Collection time')%></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tagListBody">
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer" style="margin:0 auto">
+                    <div id="pagingId" class="pagination "></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+	<%-include('../public/javascripts/tag-history-front-action.js') %>
+</script>
+
+<style>
+    #taglayoutListModaldialog {
+        max-width: 1500px;
+    }
+    .root *{
+        font-size: 20px !important;
+    }
+</style>

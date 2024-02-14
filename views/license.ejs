@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+        <script>
+            <%-include('../public/javascripts/license-action.js') %>
+        </script>
+
+    </head>
+
+    <body>
+        
+        <div class="container-fluid">
+            <!-- <h4 class="page-title" style="cursor:default;">License</h4> -->
+            <div class="card card-with-nav">
+                <div class="card-header">
+                    <span class="nav-link" style="font-weight: bold; font-size: medium; padding: 10px; cursor:default;">License<span>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <table class="table table-head-bg-success">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30%;">System ID</th>
+                                    <th style="width: 40%;">Status</th>
+                                    <th style="width: 30%;">Activatd Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="licenseList">
+                                <tr>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div id="pagination">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="licenseModal" tabindex="-1" role="dialog" aria-labelledby="licenseModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog " role="document" id="tagLocationModalDialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title-location" id="licenseTitle">License register</h5>
+                    </div>
+                    <div class="modal-body" id="licenseBody">
+                        <div class="form-group form-group-default" style="font-size: 1.2em;">
+                            <%= __('It is available when you register a license')%>
+                        </div>
+                        <div class="form-group form-group-default">
+                            <label>System ID</label>
+                            <input type="text" class="form-control" id="inputSystemId">
+                        </div>
+                        <div class="form-group form-group-default">
+                            <label>License Key</label>
+                            <input type="text" class="form-control" id="inputLicenseKey" placeholder="<%= __('Please enter the license key here')%>">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" id="registerlicenseBtn" aria-label="Close">register</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

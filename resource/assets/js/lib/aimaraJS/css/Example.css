@@ -1,0 +1,22 @@
+.dashboardContent body {
+  font-family: 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, freesans;
+}
+
+.dashboardContent #div_tree {
+  font: 20px Verdana, sans-serif;
+  display: inline-block;
+  width: 100%;
+  padding: 10px;
+}
+
+.dashboardContent  #div_log {
+	width: 400px;
+	height: 400px;
+	overflow: scroll;
+	padding:10px;
+	vertical-align: top;
+	display: inline-block;
+	border: 1px solid gray;
+	font: 20px Verdana, sans-serif;
+	line-height: 16px;
+}

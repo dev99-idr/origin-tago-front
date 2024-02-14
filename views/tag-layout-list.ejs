@@ -1,0 +1,49 @@
+<!--<script src="../public/javascripts/tag-layout-list-action.js"></script>-->
+
+<div class="container-fluid">
+    <!-- <h4 class="page-title">Tag Layout List</h4> -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Tag Template List</div>
+                </div>
+                <div class="card-body" style="max-height:70vh;overflow-y: auto;">
+                    <div class="form-group">
+                        <!--<table id="tagLayoutLsist" class="table table-head-bg-success">-->
+                        <table id="smartTagList" class="table table-head-bg-success" >
+                            <thead>
+                                <tr>
+                                    <!--<th class="after-none d-none"><%=__('Selection')%></th>-->
+                                    
+                                    <th>Preview</th>
+                                    <th>Tag Template Name</th>
+                                    <th>Size</th>
+                                    <th class="after-none"><%=__('Modify')%></th>
+                                    <th class="after-none"><%=__('Deletion')%></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tagListBody">
+                                <tr>                           
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer" style="margin:0 auto">
+                    <div id="pagingId" class="pagination "></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+	<%-include('../public/javascripts/tag-layout-list-action.js') %>
+</script>
+

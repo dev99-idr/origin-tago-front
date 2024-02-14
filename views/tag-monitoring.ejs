@@ -1,0 +1,576 @@
+<!--<script src="../public/javascripts/tag-monitoring-front-action.js"></script>-->
+
+<div class="container-fluid">
+    <!-- <h4 class="page-title">Tag Monitoring</h4> -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Smart Tag List</div>
+                </div>
+                <div class="card-body" style="max-height:70vh;overflow-y: auto;">
+                    <div class="form-group">
+                        <table id="smartTagList" class="table table-head-bg-success">
+                            <thead>
+                                <tr>
+                                    <th class="after-none d-none"><%= __('Choice')%></th>
+                                    <th>Tag Name</th>
+                                    <th>Thing ID</th>
+                                    <!-- Add Tag type and Size ->by jylee -->
+                                    <th>Type</th>
+                                    <th>Size</th>                                   
+                                    <th class="d-none">thirdParty</th>                                    
+                                    <th>Location</th>
+                                    <th>Batt Type</th>
+                                    <th class="d-none"><%= __('Collection cycle')%></th>
+                                    <!--<th class="after-none">연결 상태</th>-->
+                                    <th class="after-none"><%= __('Connection Status')%></th>
+                                    <th class="after-none"><%= __('Battery Status')%></th>
+                                    <th class="d-none">Tag Mfr</th>   
+                                    <th>Current Page</th>     <!-- Add current Page info ->by jylee 230214 -->               
+                                    <th class="after-none"><%= __('View details')%></th>
+                                    <th class="after-none"><%= __('Issuing tags')%></th>
+                                    <th class="after-none"><%= __('Latest Published Image')%></th>
+                                    <th class="after-none"><%= __('Modify')%></th>
+                                    <th class="after-none"><%= __('Deletion')%></th>
+                                    <th class="after-none"><%= __('Find Me')%></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tagListBody">
+                                <tr>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>   <!-- Add current Page info ->by jylee 230214 -->                                     
+                                    <td>-</td>     
+                                    <td>-</td> 
+                                    <td>-</td>  
+                                    <td>-</td>  
+                                    <td>-</td>  
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer" style="margin:0 auto">
+                    <div id="pagingId" class="pagination "></div>
+                </div>
+                <!-- <label>
+                    <input accept="image/png, image/jpeg" style="display:none" id = "upload" type="file" value="upload">
+                    <img id="preview" src="https://icons.iconarchive.com/icons/dtafalonso/android-lollipop/128/Downloads-icon.png" alt="your image" />
+                </label> -->
+
+                <!-- <label>
+                    <img src="my-image.png">
+                    <input type="file" name="myfile" style="display:none">
+                  </label> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade " id="tagEditModal" tabindex="-1" role="dialog" aria-labelledby="tagEditModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document" style="max-width: max-content;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="tagEditModalLabel">Thing Edit</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="msform">
+                    <div id="progressbar" class="col-md-12">
+                        <li style="color:black;z-index: 50;" class="active col-md-4 mb-4">Common Informations</li>
+                        <li style="color:black;z-index: 49;" class="col-md-4 mb-4">Collection / Command Data</li>
+                        <li style="color:black;z-index: 47;" class="col-md-4 mb-4">Connect Tag Layout</li>
+                    </div>
+                    <fieldset class="allData">
+                        <h2 class="fs-title mb-4"><%=__('Smart Tag Common Data')%></h2>
+                        <td><label ><h5>Smart Tag Name</h5></label><input type="text" class=" form-control input-pill" name="commonData" id="tagName" placeholder="<%=__('Smart Tag name')%>" ></td>
+                        <td><label ><h5>Thing ID</h5></label><input type="text" class=" form-control input-pill" name="commonData" id="tagThingId" placeholder="-" disabled readonly></td>
+                        <td><label ><h5>Location Info</h5></label><input type="text" class=" form-control input-pill" name="commonData" id="tagLocation" placeholder="<%=__('Location Information')%>" ></td>
+                        
+                        
+                        <td class="col-md-6">
+                            <label ><h5><%=__('External application interworking')%></h5></label>
+                            <select type="select" id="thirdParty" class="form-control input-pill">
+                                <!--<option value="no"><%=__('Do not select')%></option> -->
+                                <option selected value="none"><%=__('Do not select')%></option>
+                                <option value="kanban"><%=__('smart kanban')%></option>
+                            </select>                            
+                        </td>
+
+
+                        <td class="d-none"><label class="d-none" ><%=__('Collection cycle')%></label><input type="text" class="form-control input-pill d-none" name="commonData" id="tagWakeupPrd" placeholder="<%=__('Collection cycle (seconds)')%>" ></td>
+
+                        <button type="button" name="next" class="next w-25 btn btn-success"><%=__('Next')%></button>
+                    </fieldset>
+                    <fieldset>
+                        <h2 class="fs-title"><%=__('Smart Tag Collection/Command Data')%></h2>
+                        <table  class="table table-hover small-text table-head-bg-success" id="tbCollection" style = "border:1px solid #eee">
+                            <thead class="thead-dark">
+                                <tr class="tr-header">
+                                    <th>Data Name</th>
+                                    <th>Data Key</th>
+                                    <th>Data Value</th>
+                                    <th><%=__('Data Units')%></th>
+                                    <th>Data Type</th>
+                                    <th><%=__('Data Kind')%></th>
+                                    <th class="d-none">Data Period Type</th>
+                                    <!-- <th><a href="javascript:void(0);" style="font-size:18px;" id="addMoreCollection" >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-plus" viewBox="0 0 16 16">
+                                        <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                                    </svg></a>
+                                    </th> -->
+                                </tr>
+                            </thead>
+                            <tr class="collectionData">
+                                <td><input type="text" name="collectionDataName" class="form-control input-pill " placeholder="<%=__('Collection data name')%>"></td>
+                                <td><input type="text" name="collectionDataKey"  class="form-control input-pill " placeholder="<%=__('Collection data key')%>"></td>
+                                <td><input type="text" name="collectionDataValue" class="form-control input-pill " placeholder="<%=__('Collection data value')%>"></td>
+                                <td><input type="text" name="collectionDataUnit"  class="form-control input-pill " placeholder="<%=__('Collection data units')%>"></td>
+
+                                <td>
+                                    <select type="select" name="collectionDataType" class="form-control input-pill " style="height: 100%;">
+                                        <option value="String" selected>String</option>
+                                        <option value="Number">Double</option>
+                                        <option value="Boolean">Int</option>
+                                        <option value="Boolean">Boolean</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select type="select" name="collectionDataCategory" class="form-control input-pill "  style="background-color: #fff !important; height: 100%;">
+                                        <option value="collection" selected><%=__('Collection')%></option>
+                                        <option value="command"><%=__('Command')%></option>
+                                    </select>
+                                </td>
+                                <td class="d-none">
+                                    <select name="collectionDataPeriodType" class="form-control input-pill " style="height: 100%;">
+                                        <option value="Periodic">Periodic</option>
+                                        <option value="Aperiodic">Aperiodic</option>
+                                    </select>
+                                </td>
+
+<!-- 
+                                <td><a href='javascript:void(0);'  class='remove'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-minus" viewBox="0 0 16 16">
+                                    <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+                                    <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                                  </svg>
+                                </td> -->
+                            </tr>
+                        </table>
+
+                        <button type="button" name="previous" class="previous w-25 btn btn-success"><%=__('Previous')%></button>
+                        <button type="button" name="next" class="next w-25 btn btn-success"><%=__('Next')%></button>
+
+                    </fieldset>
+                    <fieldset>
+                        <h2 class="fs-title"><%=__('Connection tag layout')%></h2>
+
+                        <table id="selectedLayoutTable" class="table table-head-bg-success">
+                            <thead>
+                                <tr>
+                                    <th>Page 1</th>
+                                    <th>Page 2</th>
+                                    <th>Page 3</th>
+                                    <th>Page 4</th>
+                                    <th>Page 5</th>
+                                </tr>
+                            </thead>
+                            <tbody id="selectedLayoutBody">
+                                <tr>
+                                    <td id="selectedLayout_1" style="width: 296px;">
+                                        <a href="javascript:void(0);" style="font-size:18px;" id = "selectLayout_1" name="selectLayout" >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-plus" viewBox="0 0 16 16">
+                                            <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+                                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                                            </svg>
+                                        </a>
+                                        <a href="javascript:void(0);" style="font-size:18px;" id = "selectLayout_1_Remove" name="selectLayout_Remove" >                                          
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-minus" viewBox="0 0 16 16">
+                                            <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+                                            <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                                            </svg>
+                                        </a>
+                                    </td>
+                                    <td id="selectedLayout_2" style="width: 296px;">
+                                        <a href="javascript:void(0);" style="font-size:18px;" id = "selectLayout_2" name="selectLayout" >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-plus" viewBox="0 0 16 16">
+                                            <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+                                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                                            </svg>
+                                        </a>
+                                        <a href="javascript:void(0);" style="font-size:18px;" id = "selectLayout_2_Remove" name="selectLayout_Remove" >                                          
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-minus" viewBox="0 0 16 16">
+                                            <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+                                            <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                                            </svg>
+                                        </a>
+                                    </td>
+                                    <td id="selectedLayout_3" style="width: 296px;">
+                                        <a href="javascript:void(0);" style="font-size:18px;" id = "selectLayout_3" name="selectLayout" >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-plus" viewBox="0 0 16 16">
+                                            <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+                                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                                            </svg>
+                                        </a>         
+                                        <a href="javascript:void(0);" style="font-size:18px;" id = "selectLayout_3_Remove" name="selectLayout_Remove" >                                          
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-minus" viewBox="0 0 16 16">
+                                            <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+                                            <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                                            </svg>
+                                        </a>
+                                    </td>
+                                    <td id="selectedLayout_4" style="width: 296px;">
+                                        <a href="javascript:void(0);" style="font-size:18px;" id = "selectLayout_4" name="selectLayout" >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-plus" viewBox="0 0 16 16">
+                                            <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+                                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                                            </svg>
+                                        </a>
+                                        <a href="javascript:void(0);" style="font-size:18px;" id = "selectLayout_4_Remove" name="selectLayout_Remove" >                                          
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-minus" viewBox="0 0 16 16">
+                                            <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+                                            <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                                            </svg>
+                                        </a>
+                                    </td>
+                                    <td id="selectedLayout_5" style="width: 296px;">
+                                        <a href="javascript:void(0);" style="font-size:18px;" id = "selectLayout_5" name="selectLayout" >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-plus" viewBox="0 0 16 16">
+                                            <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+                                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                                            </svg>
+                                        </a>
+                                        <a href="javascript:void(0);" style="font-size:18px;" id = "selectLayout_5_Remove" name="selectLayout_Remove" >                                          
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-minus" viewBox="0 0 16 16">
+                                            <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+                                            <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                                            </svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button type="button" name="previous" class="previous w-25 btn btn-success"><%=__('Previous')%></button>
+                        <button type="button" name="submit" class="submit w-25 btn btn-success"><%=__('Completion')%></button>
+                    </fieldset>
+                </form>
+			</div>
+			<!-- <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div> -->
+		</div>
+	</div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade " id="tagDetailModal" tabindex="-1" role="dialog" aria-labelledby="tagEditModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document" style="max-width: max-content;">
+		<div class="modal-content" >
+			<div class="modal-header">
+				<h5 class="modal-title" id="tagEditModalLabel">Thing Details</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div id="msform" >
+                    <div id="progressbarD" class="col-md-12">
+                        <li style="color:black;z-index: 50;" class="active col-md-4 mb-4">Common Informations</li>
+                        <li style="color:black;z-index: 49;" class="active col-md-4 mb-4">Collection / Command Data</li>
+                        <li style="color:black;z-index: 47;" class="active col-md-4 mb-4">Connect Tag Layout</li>
+                    </div>
+                    <fieldset class="allDataD" style="overflow-x: scroll;">
+                        <h2 class="fs-title mb-4"><%=__('Smart Tag Common Data')%></h2>
+                        <div class="row">
+                            <div class="col-md-4"><label ><h5>Smart Tag Name</h5></label><input type="text" class=" form-control input-pill" name="commonDataD" id="tagNameD" placeholder="<%=__('Smart Tag name')%>" disabled style="font-weight:bold"></div>
+                            <div class="col-md-4"><label ><h5>Thing ID</h5></label><input type="text" class=" form-control input-pill" name="commonDataD" id="tagThingIdD" placeholder="-" disabled readonly style="font-weight:bold"></div>
+                            <div class="col-md-4"><label ><h5>Location Info</h5></label><input type="text" class=" form-control input-pill" name="commonDataD" id="tagLocationD" placeholder="<%=__('Location Information')%>"  disabled style="font-weight:bold"></div>
+                            <div class="col-md-6 d-none"><label ><%=__('Collection cycle')%></label><input type="text" class="form-control input-pill" name="commonDataD" id="tagWakeupPrdD" placeholder="<%=__('Collection cycle (seconds)')%>"  disabled style="font-weight:bold"></div>
+                        </div>
+                        <h2 class="mt-5 fs-title"><%=__('Smart Tag Collection/Command Data')%></h2>
+                        <div  >
+                            <table  class="table table-hover small-text table-head-bg-success" id="tbCollectionD" style = "border:1px solid #eee;">
+                                <thead class="thead-dark">
+                                    <tr class="tr-header">
+                                        <th>Chart</th>
+                                        <th>Data Name</th>
+                                        <th>Data Key</th>
+                                        <th>Data Value</th>
+                                        <th><%=__('Data Units')%></th>
+                                        <th><%=__('Data Collection Time')%></th>
+                                        <th>Data Type</th>
+                                        <th><%=__('Data Kind')%></th>
+                                        <th class="d-none">Data Period Type</th>
+                                        <th><%=__('Command')%></th>
+                                    </tr>
+                                    <!-- 클래스명 및 name의 맨 뒤에 D는 editsmarttag 모달의 것과 구분하기 위함. Detail의 약자  -->
+                                </thead>
+                                <tr class="collectionDataD"> 
+                                    <td>
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" style="left:-9999px; position:absolute;" type="checkbox" value="" name="collectionDataChartDrawButtonD" >
+                                            <span class="form-check-sign"></span>
+                                        </label>
+                                    </td>
+                                    <!-- <td><input type="checkbox" class="form-check-input" name="collectionDataChartDrawButtonD"  class="form-control input-pill " ></input></td> -->
+                                    <td><input type="text" name="collectionDataNameD" class="form-control input-pill " placeholder="<%=__('Collection data name')%>" disabled style="background-color: #fff !important"></td>
+                                    <td><input type="text" name="collectionDataKeyD"  class="form-control input-pill " placeholder="<%=__('Collection data key')%>" disabled style="background-color: #fff !important"></td>
+                                    <td><input type="text" name="collectionDataValueD" class="form-control input-pill " placeholder="<%=__('Collection data value')%>" disabled style="background-color: #fff !important"></td>
+                                    <td><input type="text" name="collectionDataUnitD"  class="form-control input-pill " placeholder="<%=__('Collection data units')%>" disabled style="background-color: #fff !important"></td>
+                                    <td><input type="text" name="collectionDataTimeD"  class="form-control input-pill " placeholder="-" disabled style="background-color: #fff !important"></td>
+                                    <td>
+                                        <select type="select" name="collectionDataTypeD" class="form-control input-pill " disabled style="background-color: #fff !important; height: 100%;">
+                                            <option value="String" selected>String</option>
+                                            <option value="Number">Double</option>
+                                            <option value="Boolean">Int</option>
+                                            <option value="Boolean">Boolean</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select type="select" name="collectionDataCategoryD" class="form-control input-pill " disabled style="background-color: #fff !important; height: 100%;">
+                                            <option value="collection" selected><%=__('Collection')%></option>
+                                            <option value="command"><%=__('Command')%></option>
+                                        </select>
+                                    </td>
+                                    <td class="d-none">
+                                        <select name="collectionDataPeriodTypeD" class="form-control input-pill " disabled style="background-color: #fff !important; height: 100%;">
+                                            <option value="Periodic">Periodic</option>
+                                            <option value="Aperiodic">Aperiodic</option>
+                                        </select>
+                                    </td>
+                                    <td><button class="btn btn-success" name="collectionDataCommand"  class="form-control input-pill " ><%=__('Send')%></button></td>
+
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            <div id="detailSmartTagChartContainer" class="d-none"></div>
+                        </div>
+                    </fieldset>
+                </div>
+			</div>
+			<!-- <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div> -->
+		</div>
+	</div>
+</div>
+
+<div class="modal fade " id="tagPubModal" tabindex="-1" role="dialog" aria-labelledby="tagEditModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document" style="max-width: max-content;">
+		<div class="modal-content" style="max-width:max-content">
+			<div class="modal-body">
+                <div class="modal-header">
+                    <span class="modal-title" id="tagEditModalLabel"><h5>Tag Publish</h5></span>
+                </div>
+                <div class="row mb-3 mt-3">
+                    <div class="col-md-6"><label style="font-size: 20px !important;">Smart Tag Name</label><input type="text" class="tagName form-control input-pill" placeholder="<%=__('Smart Tag name')%>" disabled style="font-weight:bold"></div>
+                    <div class="col-md-6"><label style="font-size: 20px !important">Thing ID</label><input type="text" class="tagThingId form-control input-pill" placeholder="-" disabled readonly style="font-weight:bold"></div>
+                </div>
+
+                <table id="selectedLayoutTable" class="table table-head-bg-success">
+                    <thead>
+                        <tr>
+                            <th>Page 1</th>
+                            <th>Page 2</th>
+                            <th>Page 3</th>
+                            <th>Page 4</th>
+                            <th>Page 5</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tagPubList">
+                        <tr>
+                            <td id="tagPubList1" style="width: 296px;">
+                                <a href="javascript:void(0);" style="font-size:18px;" id = "tagPubList_1" name="tagPubList" >
+                                </a>
+                                <hr>
+                                <button class="btn btn-success mt-3 d-none" name="tagSelectBtn" id="tagSelectBtn_1"><%=__('Select')%></button>
+                            </td>
+                            <td id="tagPubList2" style="width: 296px;">
+                                <a href="javascript:void(0);" style="font-size:18px;" id = "tagPubList_2" name="tagPubList" >
+                                </a>
+                                <hr>
+                                <button class="btn btn-success mt-3 d-none" name="tagSelectBtn" id="tagSelectBtn_2"><%=__('Select')%></button>
+                            </td>
+                            <td id="tagPubList3" style="width: 296px;">
+                                <a href="javascript:void(0);" style="font-size:18px;" id = "tagPubList_3" name="tagPubList" >
+                                </a>
+                                <hr>
+                                <button class="btn btn-success mt-3 d-none" name="tagSelectBtn" id="tagSelectBtn_3"><%=__('Select')%></button>
+                            </td>
+                            <td id="tagPubList4" style="width: 296px;">
+                                <a href="javascript:void(0);" style="font-size:18px;" id = "tagPubList_4" name="tagPubList" >
+                                </a>
+                                <hr>
+                                <button class="btn btn-success mt-3 d-none" name="tagSelectBtn" id="tagSelectBtn_4"><%=__('Select')%></button>
+                            </td>
+                            <td id="tagPubList5" style="width: 296px;">
+                                <a href="javascript:void(0);" style="font-size:18px;" id = "tagPubList_5" name="tagPubList" >
+                                </a>
+                                <hr>
+                                <button class="btn btn-success mt-3 d-none" name="tagSelectBtn" id="tagSelectBtn_5"><%=__('Select')%></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="d-none" id="dataField" >
+                    <div class="modal-header">
+                        <span class="modal-title" id="tagEditModalLabel"><%=__('Enter Tag Data')%></span>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-head-bg-success" style="max-width: 1300px;">
+                            <tbody id="dataFieldBody" class="row" >
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Preview button recovery(TBD) ->by jylee --> 
+                        <button type="button" class="btn btn-success d-none" id="tagPreviewBtn">Preview</button>                                            
+                        <button type="button" class="btn btn-success" id="tagPubBtn">Publish</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal" aria-label="Close">close</button>
+                    </div>
+                </div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div class="modal fade " id="lastImageModal" tabindex="-1" role="dialog" aria-labelledby="tagEditModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document" style="max-width: max-content;">
+		<div class="modal-content" style="max-width:max-content">
+			<div class="modal-body">
+                <div class="modal-header">
+                    <span class="modal-title" id="tagEditModalLabel"><h5>Last Published Image</h5></span>
+                </div>
+                <div class="row mb-3 mt-3">
+                    <div class="col-md-6"><label style="font-size: 20px !important;">Smart Tag Name</label><input type="text" class="tagName form-control input-pill" placeholder="<%=__('Smart Tag name')%>" disabled style="font-weight:bold"></div>
+                    <div class="col-md-6"><label style="font-size: 20px !important;">Thing ID</label><input type="text" class="tagThingId form-control input-pill" placeholder="-" disabled readonly style="font-weight:bold"></div>
+                    <!-- Modify Last Image concept -> by jylee 230214 -->
+                    <div class="col-md-6"><label style="font-size: 20px !important;">Current Page Number</label><input type="text" class="tagCurPage form-control input-pill" placeholder="-" disabled readonly style="font-weight:bold"></div>
+                </div>
+
+                <table id="" class="table table-head-bg-success">
+                    <thead>
+                        <tr>
+                            <th>Current Published Image</th>
+                            <!-- <th>Page 2</th> --> <!-- Modify Last Image concept -> by jylee 230214 -->
+                            <!-- <th>Page 3</th> --> <!-- Modify Last Image concept -> by jylee 230214 -->
+                        </tr>
+                    </thead>
+                    <tbody id="lastImageList">
+                        <tr>
+                            <td id="lastImage_1" style="width: 296px;">
+                                <a href="javascript:void(0);" style="font-size:18px;" >
+                                </a>
+                                <img style="width:400px; height:300px;" class="border border-dark" onerror="this.src='../../resource/images/error_image.png'"></img>
+
+                                <hr>
+                            </td>
+                            <!--  Modify Last Image concept -> by jylee 230214
+                            <td id="lastImage_2" style="width: 296px;">
+                                <a href="javascript:void(0);" style="font-size:18px;" >
+                                </a>
+                                <img style="width:400px; height:300px;" class="border border-dark" onerror="this.src='../../resource/images/error_image.png'"></img>
+
+                                <hr>
+                            </td>
+                            <td id="lastImage_3" style="width: 296px;">
+                                <a href="javascript:void(0);" style="font-size:18px;" >
+                                </a>
+                                <img style="width:400px; height:300px;" class="border border-dark" onerror="this.src='../../resource/images/error_image.png'"></img>
+
+                                <hr>
+                            </td>
+                            -->
+                        </tr>
+                    </tbody>
+                </table>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="tagLocationModal" tabindex="-1" role="dialog" aria-labelledby="tagLocationModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document" id="tagLocationModalDialog">
+		<div class="modal-content" >
+			<div class="modal-header">
+				<h5 class="modal-title-location" id="tagLocationTitle">Location List</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="tagLocationBody">
+            </div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" id="selectLocationBtn" data-dismiss="modal" aria-label="Close">Select</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade show" id="taglayoutListModal" tabindex="-1" role="dialog" aria-labelledby="tagRegisterModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg "  id="taglayoutListModaldialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="tagRegisterTitle"><%=__('Connect tag layout')%> - Page<span id="pageLayoutNumber">0</span></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+                <table id="tagLayoutLsist" class="table table-head-bg-success">
+                    <thead>
+                        <tr>
+                            <th class="after-none"><%=__('Select')%></th>
+                            <th>Preview</th>
+                            <th>Tag Layout Name</th>
+                            <th>Size</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tagLayoutLsistBody">
+                    </tbody>
+                </table>
+            </div>
+			<div class="modal-footer d-none">
+				<!-- <button type="button" class="btn btn-success" id="selectLocationBtn" data-dismiss="modal" aria-label="Close">Select</button> -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+    #taglayoutListModaldialog{
+        max-width: 1500px;
+    }
+    .modal-dialog{
+        max-width: 80vw;
+    }
+
+</style>
+
+<script>
+    <%-include('../public/javascripts/tag-monitoring-front-action.js') %>
+</script>

@@ -1,0 +1,737 @@
+<!--<script src="../public/javascripts/tag-editor-front-action.js"></script>-->
+
+
+<div class="container-fluid">
+    <!-- <h4 class="page-title">Tag Layout Editor</h4> -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Template Editor</div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="navObject" style="width:100%;">
+                        <div class="row">
+
+                            <div class="col-md-6 pl-3 pr-3 pt-1"><label class="float-left" style="font-size: 20px !important;">Tag Layout Name</label><input type="text" class="form-control input-pill" id="layoutName" placeholder="<%=__('Name')%>" >
+                            </div>
+                            <div class="col-md-6 pl-3 pr-3 pt-1">
+                                <label class="float-left" style="font-size: 20px !important;">Tag Product</label>
+                                <select type="select" id="tagProductSelect" class="col-md-12 form-control form-control input-pill">
+                                    <option value="IDR">IDR</option>
+                                    <option value="Cronus">Cronus</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 pl-3 pr-3 pt-1">
+                                <label class="float-left" style="font-size: 20px !important;">Tag Size</label>
+                                <select type="select" id="tagSizeSelect" class="col-md-12 form-control form-control input-pill">
+                                    <option selected value="2_9"><%=__('2.9 inch')%></option>
+                                    <option value="4_2"><%=__('4.2 inch')%></option>
+                                    <option value="7_5"><%=__('7.5 inch')%></option>
+                                    <option value="10_2"><%=__('10.2 inch')%></option>
+                                    <option class="d-none" value="customSize"><%=__('custom inch')%></option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 pl-3 pr-3 pt-1">
+                                <label class="float-left" style="font-size: 20px !important;">Tag Direction</label>
+                                <select type="select" id="tagDirectionSelect" class="col-md-12 form-control form-control input-pill">
+                                    <option selected value="landscape"><%=__('a horizontal')%></option>
+                                    <option value="portrait"><%=__('a vertical')%></option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 pl-3 pr-3 pt-1">
+                                <label class="float-left" style="font-size: 20px !important;">Tag Width</label>
+                                <input type="number" class="form-control input-pill " id="canvasWidth" placeholder="<%=__('width')%>" value=296>
+                            </div>
+                            <div class="col-md-6 pl-3 pr-3 pt-1">
+                                <label class="float-left" style="font-size: 20px !important;">Tag Height</label>
+                                <input type="number" class="form-control input-pill " id="canvasHeight" placeholder="<%=__('height')%>" value=128>
+                            </div>
+                        </div>
+
+
+
+                        <!-- <div class="col-md-6"><label class="float-left">Serial Number</label><input type="text" class="form-control input-pill" name="commonData" id="tagSerialNumber" placeholder="시리얼 넘버" ></div> -->
+                        <ul class="list-group list-group-flush" align="center">
+                            <span id="ObjectId" class="list-group-item mt-3">
+                                <button type="button" class="close" id="right_hidebtn1" style="float:left;">
+                                    <i class="la la-chevron-down" id="right_chevron1"></i>
+                                </button>
+                                <strong><%=__('Insertion')%></strong>
+                            </span>
+                        </ul>
+                        <ul class="list-group list-group-flush" align="center" id="shapes_list1">
+                            <li class="list-group-item flex" id="shapes">
+                                <div class="objImgParent" style="width: max-content;">
+                                    <div class="align-middle ">
+                                        <!-- <img class="p-3" id="rectInput" name="drawobject" src="../../resource/images/rect.png"> 
+                                    <img class="p-3" id="circleInput" name="drawobject" src="../../resource/images/circle.png"> 
+                                    <img class="p-3" id="arrowInput" name="drawobject" src="../../resource/images/arrow.png"> 
+                                    <img class="p-3" id="freeDrawingInput" name="drawobject" src="../../resource/images/freedrawing.png"> 
+                                    <label for="imageInputId" >
+                                        <img src="../../resource/images/imageInput.png" class=" p-3 " id="imageInput"  name="drawobject"  />
+                                    </label>
+                                    <input class="d-none"  id="imageInputId"  type="file" />
+
+
+                                    <input style="display:none" type="checkbox" id="checkbox" checked="true">
+                                    <strong style="font-size: 2en; display:none">Enabled</strong>
+                                    <label style="display:none"><input type="checkbox" id="drawRect" checked="true"  >Draw rectangle bounds</label>
+                                    <label style="display:none"><input type="checkbox" id="onlyOne" checked="true"  >Only one</label> -->
+
+                                        <div>
+                                            <button class="btn btn-outline-secondary p-0" id="rectBtn">
+                                                <img class="p-3" id="rectInput" name="drawobject"
+                                                    src="../../resource/images/rect.png">
+                                            </button>
+                                            <button class="btn btn-outline-secondary p-0" id="circleBtn">
+                                                <img class="p-3" id="circleInput" name="drawobject"
+                                                    src="../../resource/images/circle.png">
+                                            </button>
+                                            <button class="btn btn-outline-secondary p-0" id="triangleBtn">
+                                                <img class="p-3" id="triangleInput" name="drawobject"
+                                                    src="../../resource/images/triangle.png">
+                                            </button>
+                                            <button class="btn btn-outline-secondary p-0" id="textBoxBtn">
+                                                <img class="p-3" id="textBoxInput" name="drawobject"
+                                                    src="../../resource/images/textbox.png">
+                                            </button>
+                                            <button class="btn btn-outline-secondary p-0" id="lineBtn">
+                                                <img class="p-3" id="lineInput" name="drawobject"
+                                                    src="../../resource/images/line.png">
+                                            </button>
+                                            <button class="btn btn-outline-secondary p-0" id="arrowBtn">
+                                                <img class="p-3" id="arrowInput" name="drawobject"
+                                                    src="../../resource/images/arrow.png">
+                                            </button>
+                                            <button class="btn btn-outline-secondary p-0" id="freedrawingBtn">
+                                                <img class="p-3" id="freeDrawingInput" name="drawobject"
+                                                    src="../../resource/images/freedrawing.png">
+                                            </button>
+                                            <button class="btn btn-outline-secondary p-0" id="ImageBtn">
+                                                <img src="../../resource/images/imageInput.png" class=" p-3 "
+                                                    id="imageInput" name="drawobject" />
+                                                <input class="d-none" id="imageInputId" type="file" />
+                                            </button>
+                                            <button class="btn btn-outline-secondary p-0" id="dataBoxBtn">
+                                                <img src="../../resource/images/dataBoxInput.png" class=" p-3 "
+                                                    id="dataBoxInput" name="drawobject" />
+                                                <input class="d-none" id="dataBoxInputId" type="file" />
+                                            </button>
+                                        </div>
+
+                                        <input style="display:none" type="checkbox" id="checkbox" checked="true">
+                                        <strong style="font-size: 2en; display:none">Enabled</strong>
+                                        <label style="display:none"><input type="checkbox" id="drawRect"
+                                                checked="true">Draw
+                                            rectangle bounds</label>
+                                        <label style="display:none"><input type="checkbox" id="onlyOne"
+                                                checked="true">Only
+                                            one</label>
+                                    </div>
+                                    <div class="align-middle mt-4 d-none">
+                                        <label class="card-title"><strong><%=__('Web font URL')%> : </strong></label>
+                                        <input id="fontURL" type="text" class="col-md-9"
+                                            value="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"></input>
+                                        <button id="registerFont" class="btn btn-success col-md-1"><%=__('Registration')%></button>
+                                    </div>
+                                    <div class="align-middle mt-4 ">
+
+                                        <form action="/uploadFileWithOriginalFilename" enctype="multipart/form-data"
+                                            method="post" id="fileUploadForm" class="d-none">
+                                            <label class="card-title"><strong><%=__('Register font file')%></strong></label>
+                                            <input type="file" name="attachment">
+                                            <button type="submit" class="btn btn-success col-md-1">Upload</button>
+                                        </form>
+
+
+                                        <!-- <label class="card-title"><strong>폰트 파일 등록</strong></label>
+                                    <input id = "fontFileInput" type="file"></input>
+                                    <button id = "registerFontFile" class="btn btn-success col-md-1">등록</button> -->
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="row d-none">
+            <div class="col-md-12">
+                <div id="navObject" class="card" style="width:100%;">
+                    <div class="" align="center">
+                        <div id="ObjectId" >
+                            <button type="button" class="close" id="right_hidebtn1" style="float:left;">
+                                <i class="la la-chevron-right" id="right_chevron1"></i>
+                            </button>
+                            <strong>삽입</strong>
+                        </div>
+                    </div>
+                    <div class="" align="center" id="shapes_list1" style="display:none;">
+                        <div class=" row" id="shapes">
+                            <div class="p-3 objImgParent col-md-3" >
+                                <img id="rect" name="drawobject" src="../../resource/images/rect.png">
+                            </div>
+                            <div class="p-3 objImgParent col-md-3" >
+                                <img id="rect" name="drawobject" src="../../resource/images/rect.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+            <div class="row allcanvas ">
+                <div class="col-md-2" style="padding-right: 0px; height:120vh;" id="left_menuBig"> <!-- modify height 65 to 120 by jylee -->
+                    <!-- <div id="component" style="width:252px;height:65vh;border:1px solid black;float:left;"> -->
+
+                    <div class="card" id="component" style="width:100%; height:120vh; float:left;"> <!-- modify height 65 to 120 by jylee -->
+                        <div class="card-header" id="componenthead" style="width: 100%; text-align:center;">
+                            <strong class="card-title mb-3" align="center">Menu</strong>
+                        </div>
+                        <div id="componentbody" class="card-body"
+                            style="width: 100%; height: 110%; text-align:center;overflow:auto">
+
+                            <div id="componentListclass">
+                                <div >
+                                    <span ><b>Component List</b></span>
+                                </div>
+                                <div id="componentList" class="mt-2">
+                            </div>
+                            </div>
+                            <div style="display: inline-block; ">
+
+                                <div id="drawing-mode-options" class="d-none  mt-3">
+                                    <hr>
+                                    <label for="drawing-brush-selector">Brush:</label>
+                                    <select id="drawing-brush-selector">
+                                        <option>Pencil</option>
+                                        <option>Circle</option>
+                                        <option>Spray</option>
+                                    </select><br>
+                                    <label for="drawing-line-width">Line width:</label>
+                                    <input type="number" id="drawing-line-width-input" class="info"
+                                        value=20></span><input type="range" value="20" min="0" max="150"
+                                        id="drawing-line-width"><br>
+
+                                    <label class="d-none" for="drawing-color">Line color:</label>
+                                    <input class="d-none" type="color" value="black" id="drawing-color"><br>
+                                </div>
+                                <div id="data-box-option" class="list-group-flush d-none mt-3">
+                                    <hr>
+                                    <span class="float-left"><b>Data Group Option</b></span>
+                                    <button id="addDatagroup" class="btn btn-success btn-round m-1" style="text-align:center;">
+                                        <strong><%=__('Select Data Group')%></strong>
+                                    </button>
+                                    <hr>
+
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="data-value-select-input" name="data-input-type"
+                                            class="custom-control-input"
+                                            checked="checked" />
+                                        <label class="custom-control-label" for="data-value-select-input"><%=__('Select Data')%></label>
+                                    </div>
+                                    <br>
+                                    <li class="list-group-item border-0">
+                                        <label for="drawing-brush-selector"><strong>Data Group</strong></label>
+                                        <input type="text" class=" form-control input-pill" name="data-group-selector" id="data-group-selector" placeholder="">    
+                                        <label for="drawing-brush-selector"><strong>Data Value</strong></label>
+                                        <select class="form-control input-pill" id="data-value-selector">
+                                        </select>
+                                      
+                                    </li>
+                                    <!-- <label for="drawing-brush-selector">Data Group</label>
+                                    <input type="text" class=" form-control input-pill" name="data-group-selector"
+                                    id="data-group-selector" placeholder="">                                     -->
+                                    <!-- <select id="data-group-selector">
+                                        <option>group1</option>
+                                        <option>group2</option>
+                                        <option>group3</option>
+                                    </select> -->
+                                    <br><hr>
+                                    <div class="custom-control custom-radio d-none">
+                                        <input type="radio" id="data-value-direct-input" name="data-input-type"
+                                            class="custom-control-input"/>
+                                        <label class="custom-control-label" for="data-value-direct-input"><%=__('Direct Input')%></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-footer" style="width:100%;">
+                            <button id="compcopy" class="btn btn-success btn-round col-5 m-1"
+                                style="text-align:center;">
+                                <strong><%=__('Copy')%></strong>
+                            </button>
+                            <button id="compdelete" class="btn btn-success btn-round col-5  m-1"
+                                style="text-align:center;">
+                                <strong><%=__('Deletion')%></strong>
+                            </button>
+                            <button id="undo" class="btn btn-success btn-round col-5  m-1" style="text-align:center;">
+                                <strong>undo</strong>
+                            </button>
+                            <button id="redo" class="btn btn-success btn-round col-5 m-1" style="text-align:center;">
+                                <strong>redo</strong>
+                            </button>
+                            <button id="clear" class="btn btn-success btn-round col-11 m-1" style="text-align:center;">
+                                <strong>All Clear</strong>
+                            </button>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7 card flex" style="height:120vh; max-width:63.3%; flex: 0 0 63.3%;"
+                    id="middleCanvas"> <!-- modify height 65 to 120 by jylee -->
+                    <canvas id="canvas" style=" border: 1px solid black; " tabindex="1"></canvas>
+                </div>
+                <div class="col-md-3" style="padding-left:0px; height:120vh; max-width: 20%;" id="rightCanvas"> <!-- modify height 65 to 120 by jylee -->
+                    <div class="card " id="rightrect" style="width:100%; float:left; height:120vh; /* max-height: 900px; */ border-left: 0px; opacity: 1;">
+                        <div id="storage" style=" width:100%;height:100%; ;overflow: auto;">
+                            <div class="card m-0" id="rectdetail" >
+                                <div class="card-header" id="rectsetup" align="center">
+                                    <strong><%=__('a graphic form')%></strong>
+                                    <!-- <input type="button" name="hidebtnes" value="X" style="float:right;" /> -->
+                                    <button type="button" class="close d-none" id="hideBtnId" name="hidebtnes">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="card-body d-none" id="rectsetupBody">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-none">
+                                            <label>id</label>
+                                            <input type="text" class=" form-control input-pill" name="rectkeydown"
+                                                id="rectid" placeholder="">
+                                        </li>
+                                        <li class="list-group-item">
+                                            <label><strong>Position X</strong></label><input class="form-control input-pill"
+                                                style="float:right; text-align: center;" type="number" id="rectx"
+                                                name="rectkeydown" value="" /><br>
+                                            <label><strong>Position Y</strong></label><input class="form-control input-pill"
+                                                style="float:right; text-align: center;" type="number" id="recty"
+                                                name="rectkeydown" value="" />
+                                        </li>
+                                        <li class="list-group-item">
+                                            <label><strong>Width</strong></label><input class="form-control input-pill"
+                                                style="float:right; text-align: center;" type="number" id="rectwidth"
+                                                name="rectkeydown" value="" />
+                                            <br>
+                                            <label><strong>Height</strong></label><input class="form-control input-pill"
+                                                style="float:right; text-align: center;" type="number" id="rectheight"
+                                                name="rectkeydown" value="" /><br>
+                                        </li>
+                                        <!--
+                                        <li class="list-group-item" style="display:none">
+                                        -->  
+                                        <!-- Reuse rotation ->by jylee 230222    --> 
+                                        <li class="list-group-item">    
+                                            <label><%=__('Rotation')%></label><input class="form-control input-pill"
+                                                style="float:right; text-align: center;" type="text" id="rectRot"
+                                                name="rectkeydown" value="" />
+                                        </li>
+                                        <li class="list-group-item" id="line-group">
+                                            <strong>선</strong><br>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="rectOutLineN" name="rectOutLine"
+                                                    value="rectOutLineN" class="custom-control-input"
+                                                     />
+                                                <label class="custom-control-label" for="rectOutLineN"><%=__('No lines')%></label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="rectOutLineY" name="rectOutLine"
+                                                    value="rectOutLineY" class="custom-control-input" checked="checked"/>
+                                                <label class="custom-control-label" for="rectOutLineY"><%=__('line')%></label>
+                                            </div>
+                                            <div id="rectOutLineDiv" class="">
+                                                <hr>
+                                                <label class=""><%=__('the color of a line')%></label><br>
+                                                <div id="rectOutLineColor" class="picker input-pill">
+                                                    <i class="la la-paint-brush ml-2" aria-hidden="true"
+                                                        style="color:white"></i>
+                                                </div>
+                                                <br>
+                                                <label style="display:none"><%=__('width')%></label>
+                                                <input style="display:none" class="form-control input-pill"
+                                                    style="float:right; text-align: center;" type="number"
+                                                    id="rectOutLineWidth" value=1>
+                                            </div>
+
+                                        </li>
+                                    </ul>
+                                    <!-- <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <strong>Text</strong><br>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="rectdatanone" name="rectText"
+                                                    value="rectdatanone" class="custom-control-input"
+                                                    checked="checked" />
+                                                <label class="custom-control-label" for="rectdatanone"
+                                                    id="rectdatanoneAll">Text
+                                                    없음</label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="rectdatadirect" name="rectText"
+                                                    value="rectdatadirect" class="custom-control-input">
+                                                <label class="custom-control-label" for="rectdatadirect"
+                                                    id="rectdatadirectAll">직접 입력</label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="rectdatadataset" name="rectText"
+                                                    value="rectdatadataset" class="custom-control-input" />
+                                                <label class="custom-control-label" for="rectdatadataset"
+                                                    id="rectdatadatasetAll"> Data 선택</label>
+                                            </div>
+                                            <div id="rectdatadatasetdiv" class="d-none">
+                                                <hr>
+                                                <select class="form-control input-pill"
+                                                    style="float:right; text-align: center;" id="rectdataset"
+                                                    name="rectdatasetName">
+                                                    <option selected>Data1</option>
+                                                    <option>Data2</option>
+
+                                                </select>
+                                            </div>
+                                        </li>
+                                    </ul> -->
+                                    <ul id="textStyleUl" class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <!-- <strong>Text Style</strong><br><br> -->
+                                            <label class="float-left"><strong>Font</strong></label>
+                                            <select type="select" id="fontName" name="rectTextStyle"
+                                                class="col-md-12 form-control input-pill">
+                                                <!-- <option value="굴림체">굴림체</option>
+                                            <option value="궁서체">궁서체</option>
+                                            <option value="arial">arial</option>
+                                            <option value="맑은고딕">맑은 고딕</option> -->
+                                            </select>
+
+                                            <label class="float-left"><strong>Size</strong></label><br>
+                                            <input class="col-md-12 form-control input-pill"
+                                                style="float:right; text-align: center;" type="number" id="rectfontsize"
+                                                name="rectTextStyle" value=20 min=12 />
+                                            <br>
+                                            <label class="float-left"><strong>Text</strong></label><br>
+                                            <input class="col-md-12 form-control input-pill"
+                                            style="float:right; text-align: center;" type="text" id="rectText"
+                                            name="rectText" />
+                                            <br>
+
+                                            <label class=""><strong><%=__('font color')%></strong></label><br>
+                                            <div id="rectFontColor" class="picker input-pill">
+                                                <i class="la la-paint-brush ml-2" aria-hidden="true"
+                                                    style="color:white"></i>
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <!--    
+                                            <label class="d-none"><strong>Text Style</strong></label>                                            
+                                            <div class="float-right d-none">  
+                                            -->
+                                            <!-- Add font Style ->by jylee 230222-->
+                                            <label class=""><strong>Text Style</strong></label> 
+                                            <div class="float-right">    
+                                                <button class="btn btn-outline-secondary btn-xs" value="0"
+                                                    id="font_underline" name="fontstyle"><i
+                                                        class="la la-underline la-2x" aria-hidden="true"></i></button>
+                                                <button class="btn  btn-outline-secondary btn-xs" value="0"
+                                                    id="font_italic" name="fontstyle"><i class="la la la-italic la-2x"
+                                                        aria-hidden="true"></i></button>
+                                                <button class="btn  btn-outline-secondary btn-xs" value="0"
+                                                    id="font_bold" name="fontstyle"><i class="la la-bold la-2x"
+                                                        aria-hidden="true"></i></button>
+                                            </div>
+                                            
+                                            <label class=""><strong>Text Align</strong></label><br>
+                                            <div class="float-right">
+                                                <button class="btn btn-outline-secondary btn-xs" id="left" value="0"
+                                                    name="textAlignBtn">
+                                                    <i class="la la-align-left la-2x" aria-hidden="true"></i>
+                                                </button>
+                                                <button class="btn btn-outline-secondary btn-xs active" id="center" value="0"
+                                                    name="textAlignBtn">
+                                                    <i class="la la-align-center la-2x" aria-hidden="true"></i>
+                                                </button>
+                                                <button class="btn btn-outline-secondary btn-xs" id="right" value="0"
+                                                    name="textAlignBtn">
+                                                    <i class="la la-align-right la-2x" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+
+                                            <label class=""><strong>Text Vertical Align</strong></label><br>
+                                            <div class="float-right">
+                                                <button class="btn btn-outline-secondary btn-xs" id="top" value="0"
+                                                    name="textverticalAlignBtn"
+                                                    style="padding-top: 0px;padding-bottom: 8px; margin-top: 2px;">
+                                                    <i class="la la-align-justify la-2x" aria-hidden="true"></i>
+                                                </button>
+                                                <button class="btn btn-outline-secondary btn-xs active" id="middle" value="0"
+                                                    name="textverticalAlignBtn" style="margin-top: 2px;">
+                                                    <i class="la la-align-justify la-2x" aria-hidden="true"></i>
+                                                </button>
+                                                <button class="btn btn-outline-secondary btn-xs" id="bottom" value="0"
+                                                    name="textverticalAlignBtn"
+                                                    style="padding-top: 8px;padding-bottom: 0px; margin-top: 2px;">
+                                                    <i class="la la-align-justify la-2x" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                            <br>
+                                            <br>
+
+                                            <label class=""><strong><%=__('Border Color')%></strong></label><br>
+                                            <div id="lineFillColor" class="picker input-pill">
+                                                <i class="la la-paint-brush ml-2" aria-hidden="true"
+                                                    style="color:white"></i>
+                                            </div>
+                                            <br>
+                                            <br>
+                                        </li>
+                                    </ul>
+                                    <ul id="backGroundStyleUl" class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <strong><%=__('Fill Background')%></strong><br>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="rectfillnone" name="rectFilltype"
+                                                    value="rectfillnone" class="custom-control-input"
+                                                    checked="checked" />
+                                                <label class="custom-control-label" for="rectfillnone"><%=__('No fill')%></label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="rectfillcolor" name="rectFilltype"
+                                                    value="rectfillcolor" class="custom-control-input">
+                                                <label class="custom-control-label" for="rectfillcolor"><%=__('Fill in the monochrome')%></label>
+                                            </div>
+                                            <div id="rectBackgroundDiv" class="d-none">
+                                                <hr>
+                                                <label class=""><%=__('Background color')%></label><br>
+                                                <div id="rectBackgroundColor" class="picker input-pill">
+                                                    <i class="la la-paint-brush ml-2" aria-hidden="true"
+                                                        style="color:white"></i>
+                                                </div>
+                                                <br>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!-- <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <strong>배경 채우기</strong><br>
+                                        <br><label for="rectfillnone">
+                                            <input type="radio" id="rectfillnone" name="rectFilltype" value="rectfillnone" class="custom-control-input" checked="checked" /> 
+                                            채우기 없음
+                                        </label>
+                                        <br><label for="rectfillcolor"><input type="radio" id="rectfillcolor" name="rectFilltype"  class="custom-control-input"
+                                                value="rectfillcolor" /> 단색 채우기</label>
+                                        <br>
+                                        <div name="fillcolorarea">
+                                            <label>&nbsp;&nbsp;&nbsp;채우기 색</label>
+                                            <div id="rectOutLineColor3" class="picker" style="float:right; ">
+                                                <i class="la la-paint-brush" aria-hidden="true"
+                                                    style="margin-left:11%;margin-top:5%;position:relative;color:black"></i>
+                                            </div>
+                                            <select class="form-control input-pill" style="float:right; text-align: center; display:none"
+                                                id="rectColor" name="rectselect">
+                                                <option value="black">
+                                                    black
+                                                </option>
+                                                <option value="white">
+                                                    white
+                                                </option>
+                                            </select>
+                                            <br>
+                
+                                            <label>&nbsp;&nbsp;&nbsp;투명도</label>
+                                            <input class="form-control input-pill" style="float:right; text-align: center;" type="number"
+                                                id="rectAlpha" step=0.1 name="rectAplhaName" value="" min=0 max=1 />
+                                        </div>
+                                        <label for="rectfillimg"><input type="radio" id="rectfillimg" name="rectFilltype"  class="custom-control-input"
+                                                value="rectfillimg" /> 그림 채우기</label>
+                                        <br>
+                
+                                        <div name="fillcolorarea">
+                                            <label>&nbsp;&nbsp;&nbsp;이미지 선택</label>
+                                            <input class="form-control-file small" style="float:right; width:60%;" type="file"
+                                                id="canvasImg" />
+                                            <br>
+                                            <br>
+                                            <label>&nbsp;&nbsp;&nbsp;이미지 투명도</label><select class="form-control input-pill"
+                                                style="float:right; text-align: center;" id="rectImgAlpha" name="rectselect">
+                                                <option value="1">100%</option>
+                                                <option value="0.5">50%</option>
+                                                <option value="0.1">10%</option>
+                                            </select>
+                                            <br>
+                                            <label style="display:none">&nbsp;&nbsp;&nbsp;채우기 유형
+                                            </label>
+                                            <select class="form-control input-pill" style="float:right;display:none; text-align: center;"
+                                                id="filltype" name="rectselect">
+                                                <option value="fit">크기에 맞추어</option>
+                                                <option value="repeat">바둑판 채우기</option>
+                                                <option value="centor">가운데로</option>
+                                            </select>
+                                        </div>
+                                    </li>
+                                </ul> -->
+                                </div>
+                            </div>
+                            <div class="card d-none" id="drawingdetail" style="width:100%; height: 496px;">
+                                <div class="card-header" id="linesetup" align="center">
+                                    <strong>Free Drawing</strong>
+                                    <button type="button" class="close" name="hidebtnes" value="X">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="card-body" style="overflow: auto;">
+                                    <ul class="list-group list-group-flush">
+                                        <li id="linesetup" class="list-group-item">
+                                            <label style="float:left">&nbsp;&nbsp;&nbsp;Color</label>
+                                            <div id="drawingColor" class="picker"
+                                                style="float:right;height:22px;width:45%;border:1px solid black">
+                                                <i class="la la-paint-brush" aria-hidden="true"
+                                                    style="margin-left:11%;margin-top:2px;position:relative;color:black;float:left"></i>
+                                            </div>
+                                        </li>
+                                        <li id="linesetup" class="list-group-item">
+                                            <label><%=__('Line thickness')%> </label>
+                                            <input class="form-control input-pill"
+                                                style="float:right; text-align: center;" type="number"
+                                                id="drawingThickness" name="drawingThickness" value="1" />
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card d-none" id="linedetail" style="width:100%; height: 496px;">
+                                <div class="card-header" id="linesetup" align="center">
+                                    <strong>선</strong>
+                                    <button type="button" class="close" name="hidebtnes" value="X">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="card-body" style="overflow: auto;">
+                                    <ul class="list-group list-group-flush" style="display:none">
+                                        <li id="linesetup" class="list-group-item" align="center">
+                                            <label for="vertical"><input type="radio" name="linedirection" id="vertical"
+                                                    value="vertical" class="custom-control-input" />
+                                                Vertical</label>&nbsp;&nbsp;
+                                            <label for="horizontal"><input type="radio" name="linedirection"
+                                                    id="horizontal" class="custom-control-input" value="horizontal" />
+                                                Horizontal</label>
+                                        </li>
+                                    </ul>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <br>
+                                            <label><%=__('transparency')%></label><input class="form-control input-pill"
+                                                style="float:right; text-align: center;" type="number" id="lineAlpha"
+                                                step=0.1 name="lineAlphaname" value="" min=0 max=1 />
+                                        </li>
+
+                                    </ul>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <label><%=__('Line thickness')%></label><input class="form-control input-pill"
+                                                style="float:right; text-align: center;" type="number" id="lineheight"
+                                                name="linetextbox" value="" /><br>
+                                            <label><%=__('Line Length')%></label><input class="form-control input-pill"
+                                                style="float:right; text-align: center;" type="number" id="linewidth"
+                                                name="linetextbox" value="" />
+                                        </li>
+                                    </ul>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <label>Position X</label><input class="form-control input-pill"
+                                                style="float:right; text-align: center;" type="number" id="linex"
+                                                name="linetextbox" value="" /><br>
+                                            <label>Position Y</label><input class="form-control input-pill"
+                                                style="float:right; text-align: center;" type="number" id="liney"
+                                                name="linetextbox" value="" />
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button id="saveBtn" class="col-md-1 btn btn-success btn-round float-right" style="text-align:center;">
+                <strong>Save</strong>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    <%-include('../public/javascripts/tag-editor-front-action.js') %>
+</script>
+
+
+<!-- Modal -->
+<div class="modal fade" id="dataGroupModal" tabindex="-1" role="dialog" aria-labelledby="tagRegisterModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="tagRegisterTitle">Data Group</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="dataGroupBody">
+                <div class="card card-with-nav">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                            <a class="nav-link" style="font-weight: bold; font-size: medium; padding: 10px; cursor:default;">Location Group List</a>
+                            </div>
+                            <div class="col-md-6" style="text-align: right; padding: 0px 20px;">
+                                <button class="btn btn-success btn-sm" id="addLocationBtn"><i class="la la-plus"></i></button>
+                                <button class="btn btn-success btn-sm" id="deleteLocationBtn"><i class="la la-minus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="tree"></div>
+                    </div>
+                </div>
+            </div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" id="dataGroupAddBtn" data-dismiss="modal" aria-label="Close">Add</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+    #rectOutLineColor {
+        width: 30%;
+        height: 22px;
+        float: right;
+        margin-top: 1%;
+        height: 22px;
+        border: 1px solid black;
+        cursor: pointer;
+    }
+
+    #rectFontColor {
+        width: 30%;
+        float: right;
+        margin-top: 2%;
+        border: 1px solid black;
+        cursor: pointer;
+    }
+    #rectBackgroundColor {
+        width: 30%;
+        height: 22px;
+        float: right;
+        margin-top: 1%;
+        height: 22px;
+        border: 1px solid black;
+        cursor: pointer;
+    }
+    #lineFillColor{
+        width: 30%;
+        float: right;
+        margin-top: 2%;
+        border: 1px solid black;
+        cursor: pointer;
+    }
+
+</style>

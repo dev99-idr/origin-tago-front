@@ -1,0 +1,234 @@
+
+<script>
+    <%-include('../public/javascripts/map-dashboard.js') %>
+</script>
+
+<div class="container-fluid">
+    <!-- <h4 class="page-title">Tag Dashboard</h4> -->
+    <div class="dropdown show">
+        <a class="btn btn-success dropdown-toggle " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Edit Map
+        </a>
+
+        <div class="dropdown-menu col-md-8 border border-success" aria-labelledby="dropdownMenuLink" style="margin-top:55px">
+            <div class="col-md-12 right-editor">
+                <div class="card ">
+                    <div class="card" style="display: flex; flex-direction: row;">
+                        <button class="btn btn-outline-success" style="width: 50%;" id="ImageBtn">
+                            <input class="d-none" id="imageInputId" type="file" />
+                            <%=__('Upload Drawing')%>
+                        </button>
+                        <button class="btn btn-outline-success" style="width: 50%;" id="saveMapBtn">
+                            <%=__('Upload Drawing')%>
+                        </button>
+                        <button class="btn btn-outline-success" style="width: 50%;" id="removeThing">
+                            <%=__('Delete Selection Thing')%>
+                        </button>
+                    </div>
+                    <div class="card">
+                        <div>
+                            <table id="smartTagList" class="table table-head-bg-success">
+                                <thead>
+                                    <tr>
+                                        <th class="after-none"><%=__('Additional')%></th>
+                                        <th>Smart Tag Name</th>
+                                        <th>Thing ID</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tagListBody">
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 left-map h-100">
+            <div class="card">
+                <div class="">
+                    <canvas id="canvas" style=" border: 1px solid black; ">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="h-50">
+                <div class="card m-0">
+                    <div>
+                        <div class="card-header">
+                            <div class="card-title">Device Status <span class="float-right text-muted" style = "font-size: 12px;"id="deviceUpdatedTime"></span></div>
+                        </div>
+                        <div class="card-body">
+                            <div id="device-chart-container">
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="h-50">
+                <div class="card m-0">
+                    <div>
+                        <div class="card-header">
+                            <div class="card-title">Battery Status <span class="float-right text-muted" style = "font-size: 12px;"id="batteryUpdatedTime"></span></div>
+                        </div>
+                        <div class="card-body">
+                            <div id="battery-chart-container">
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade " id="tagDetailModal" tabindex="-1" role="dialog" aria-labelledby="tagEditModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document" style="max-width: max-content;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tagEditModalLabel">Thing Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="msform">
+                        <div id="progressbarD" class="col-md-12">
+                            <li style="color:black;z-index: 50;" class="active col-md-4 mb-4">Common Informations</li>
+                            <li style="color:black;z-index: 49;" class="active col-md-4 mb-4">Collection / Command Data
+                            </li>
+                            <li style="color:black;z-index: 47;" class="active col-md-4 mb-4">Connect Tag Layout</li>
+                        </div>
+                        <fieldset class="allDataD">
+                            <h2 class="fs-title mb-4"><%=__('Smart Tag Common Data')%></h2>
+                            <div class="row">
+                                <div class="col-md-4"><label>Smart Tag Name</label><input type="text"
+                                        class=" form-control input-pill" name="commonDataD" id="tagNameD"
+                                        placeholder="<%=__('Smart Tag Name')%>" disabled style="font-weight:bold"></div>
+                                <div class="col-md-4"><label>Thing ID</label><input type="text"
+                                        class=" form-control input-pill" name="commonDataD" id="tagThingIdD"
+                                        placeholder="-" disabled readonly style="font-weight:bold"></div>
+                                <div class="col-md-4"><label>Location Info</label><input type="text"
+                                        class=" form-control input-pill" name="commonDataD" id="tagLocationD"
+                                        placeholder="<%=__('Location Information')%>" disabled style="font-weight:bold"></div>
+                                <div class="col-md-6 d-none"><label><%=__('Collection cycle')%></label><input type="text"
+                                        class="form-control input-pill" name="commonDataD" id="tagWakeupPrdD"
+                                        placeholder="<%=__('Collection cycle (seconds)')%>" disabled style="font-weight:bold"></div>
+                            </div>
+                            <h2 class="mt-5 fs-title"><%=__('Smart Tag Collection/Command Data')%></h2>
+                            <table class="table table-hover small-text table-head-bg-success" id="tbCollectionD"
+                                style="border:1px solid #eee">
+                                <thead class="thead-dark">
+                                    <tr class="tr-header">
+                                        <th>Chart</th>
+                                        <th>Data Name</th>
+                                        <th>Data Key</th>
+                                        <th>Data Value</th>
+                                        <th><%=__('Data Units')%></th>
+                                        <th><%=__('Data Collection Time')%></th>
+                                        <th>Data Type</th>
+                                        <th><%=__('Data Kind')%></th>
+                                        <th class="d-none">Data Period Type</th>
+                                        <th><%=__('Command')%></th>
+
+                                        <!-- <th><a href="javascript:void(0);" style="font-size:18px;" id="addMoreCollection" >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#679897" class="bi bi-file-plus" viewBox="0 0 16 16">
+                                        <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                                    </svg></a>
+                                    </th> -->
+                                    </tr>
+                                </thead>
+                                <tr class="collectionDataD">
+                                    <td>
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" style="left:-9999px; position:absolute;" type="checkbox" value="" name="collectionDataChartDrawButtonD" >
+                                            <span class="form-check-sign"></span>
+                                        </label>
+                                    </td>
+                                    <!-- <td><button class="btn btn-success" name="collectionDataChartDrawButtonD"  class="form-control input-pill " >추가</button></td> -->
+                                    <td><input type="text" name="collectionDataNameD" class="form-control input-pill "
+                                            placeholder="<%=__('Collection data name')%>" disabled style="background-color: #fff !important">
+                                    </td>
+                                    <td><input type="text" name="collectionDataKeyD" class="form-control input-pill "
+                                            placeholder="<%=__('Collection data keyname')%>" disabled style="background-color: #fff !important">
+                                    </td>
+                                    <td><input type="text" name="collectionDataValueD" class="form-control input-pill "
+                                            placeholder="<%=__('Collection data value')%>" disabled style="background-color: #fff !important">
+                                    </td>
+                                    <td><input type="text" name="collectionDataUnitD" class="form-control input-pill "
+                                            placeholder="<%=__('Collection data units')%>" disabled style="background-color: #fff !important">
+                                    </td>
+                                    <td><input type="text" name="collectionDataTimeD" class="form-control input-pill "
+                                            placeholder="-" disabled style="background-color: #fff !important"></td>
+                                    <td>
+                                        <select type="select" name="collectionDataTypeD"
+                                            class="form-control input-pill " disabled
+                                            style="background-color: #fff !important; height: 100%;">
+                                            <option value="String" selected>String</option>
+                                            <option value="Number">Double</option>
+                                            <option value="Boolean">Int</option>
+                                            <option value="Boolean">Boolean</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select type="select" name="collectionDataCategoryD" class="form-control input-pill " disabled style="background-color: #fff !important; height: 100%;">
+                                            <option value="collection" selected><%=__('Collection')%></option>
+                                            <option value="command"><%=__('Command')%></option>
+                                        </select>
+                                    </td>
+                                    <td class="d-none">
+                                        <select name="collectionDataPeriodTypeD" class="form-control input-pill "
+                                            disabled style="background-color: #fff !important; height: 100%;">
+                                            <option value="Periodic">Periodic</option>
+                                            <option value="Aperiodic">Aperiodic</option>
+                                        </select>
+                                    </td>
+                                    <td><button class="btn btn-success" name="collectionDataCommand"
+                                            class="form-control input-pill "><%=__('Send')%></button></td>
+
+                                </tr>
+                            </table>
+                            <div id="detailSmartTagChartContainer" class="d-none"></div>
+
+                            <h2 class="d-none mt-5 fs-title"><%=__('Connect tag layout')%></h2>
+                            <button type="button" name="submitD" class="d-none submit w-25 btn btn-success"><%=__('Completion')%></button>
+                        </fieldset>
+                    </div>
+                </div>
+                <!-- <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="tooltip" class="d-none" style="position: fixed;">
+    <span><b id="tooltipThingId" style="background-color: white; border: 1px solid; font-size: 20px;"><%=__('Tag Name')%></b></span>
+</div>
+
+<style>
+    .btn-outline-success {
+        border-color: #679897 !important;
+        color: #679897 !important;
+    }
+
+    .btn-outline-success:hover {
+        background-color: #679897 !important;
+        color: #eee !important;
+    }
+</style>

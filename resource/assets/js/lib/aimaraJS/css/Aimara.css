@@ -1,0 +1,180 @@
+.dashboardContent ul.tree, ul.tree ul {
+	list-style-type: none;
+	background: url(vline.png) repeat-y;
+	margin: 0;
+	padding: 0;
+	padding-left: 7px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	cursor: default;
+}
+
+.dashboardContent li.last {
+	background-image: 'url("css/lastnode.png")';
+	background-repeat: no-repeat;
+}
+
+.dashboardContent ul.tree ul {
+	padding-left: 7px;
+	overflow-y: auto;
+}
+
+.dashboardContent ul.tree li {
+	margin: 0;
+	padding: 0 12px;
+	line-height: 22px;
+	background: url(node.png) no-repeat;
+}
+
+.dashboardContent ul.tree li.last {
+	background: #fff url(lastnode.png) no-repeat;
+}
+
+.dashboardContent img.exp_col {
+	position: absolute;
+	margin-top: 4px;
+	margin-left: -19px;
+	vertical-align: sub;
+	cursor: pointer;
+}
+
+.dashboardContent img.exp_col_empty {
+	position: absolute;
+	margin-top: 4px;
+	margin-left: -20px;
+	vertical-align: sub;
+	width: 16px;
+	cursor: pointer;
+}
+
+.dashboardContent img.icon_tree {
+	vertical-align: middle;
+	padding-left: 3px;
+	margin-top: -3px;
+}
+
+.dashboardContent a.node {
+	padding: 2px;
+}
+
+.dashboardContent span.node a {
+	padding-left: 3px;
+	cursor: pointer;
+}
+
+.dashboardContent span.node {
+	margin-left: -1px;
+	padding-right: 3px;
+
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+.dashboardContent span.node:hover {
+	margin-left: -1px;
+	padding-right: 3px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	background-color: #DCEDFF;
+	border-radius: 2px;
+}
+
+.dashboardContent span.node_selected {
+	margin-left: -2px;
+	padding-right: 3px;
+	cursor: pointer;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	background-color: #CEFFCE;
+	border: 1px solid #8AE88A;
+	border-radius: 2px;
+}
+
+.dashboardContent span.node_selected a {
+	padding-left: 3px;
+	cursor: pointer;
+}
+
+.dashboardContent .menu,.sub-menu {
+  margin: 0;
+  padding: 0;
+  font: 20px Verdana, sans-serif;
+}
+
+.dashboardContent .menu,
+.sub-menu {
+  list-style: none;
+  background: #000;
+}
+.dashboardContent .sub-menu {
+  background: #F1F1F1;
+}
+.dashboardContent .menu a {
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px;
+}
+
+.dashboardContent .menu span {
+  position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+.dashboardContent .menu div {
+  position: absolute;
+	right: 4px;
+	top: 0px;
+	padding: 8px;
+}
+
+.dashboardContent .menu .menu_img {
+	vertical-align: middle;
+}
+
+.dashboardContent .menu img {
+  text-decoration: none;
+  display: inline-block;
+	vertical-align: sub;
+  padding-left: 5px;
+}
+.dashboardContent .menu li {
+  position: relative;
+}
+
+.dashboardContent .menu li:hover {
+  background: aquamarine;
+	cursor: pointer;
+}
+
+.dashboardContent .dashboardContent .sub-menu li:hover {
+  background: aquamarine;
+}
+.dashboardContent .menu li:hover > .sub-menu {
+  display: block;
+}
+
+.dashboardContent .menu {
+	width: 100%;
+	position: absolute;
+	background: #F1F1F1;
+	-webkit-user-select: none; /* Chrome/Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
+	cursor: default;
+	box-shadow: 2px 2px 3px #BDBDBD;
+}
+
+
+.dashboardContent .sub-menu {
+  display: none;
+  position: absolute;
+  min-width: 150px;
+	box-shadow: 2px 2px 3px #BDBDBD;
+}
+
+.dashboardContent .menu .sub-menu {
+  top: 0;
+  left: 100%;
+}

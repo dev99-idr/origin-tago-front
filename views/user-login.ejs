@@ -1,0 +1,84 @@
+
+
+
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>IDR TAG Operation - Login</title>
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <link rel="stylesheet" href="/resource/assets/css/bootstrap.min.css">
+	<!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">-->
+    <link rel="stylesheet" href="/resource/assets/css/googleapis.com.css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+	<link rel="stylesheet" href="/resource/assets/css/ready.css">
+	<link rel="stylesheet" href="/resource/assets/css/demo.css">
+    <!--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
+	
+	<script src="/resource/assets/js/axios.min.js"></script>
+	
+    <script >
+       /* function goLocale(){
+            location.href= "/" + document.getElementById("userLocale").value;            
+        }
+
+        function getSelectLang(){
+            var cookieLocale = getCookie("lang");
+
+        }*/
+    </script>
+
+    <!--<script src="../public/javascripts/user-login-action.js"></script>-->
+    <link rel="stylesheet" href="/resource/assets/js/lib/pajinatify/dist/jquery.pajinatify.css">
+</head>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-6 col-md-4">
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="p-5 card">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">IDR TAG Operations</h1>
+                                </div>
+                                <div class="user" id="loginDiv">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-user"
+                                            id="inputId" placeholder="ID">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control form-control-user"
+                                            id="inputPassword" placeholder="Password">
+                                    </div>
+                                    <button id="loginbtn" class="w-100 btn btn-success">
+                                        Login
+                                    </button>
+                                </div>
+                                <!--
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4"></br>Language </h1>
+                                </div>
+                                <div class="form-group">
+                                    <select type="select" id="userLocale" class="form-control input-pill" onchange="goLocale();">
+                                        <option value="ko" > >korea</option>
+                                        <option value="en" >english</option>
+                                    </select>
+                                </div>
+                                -->
+                                
+                                <!-- <hr> -->
+                               <!-- <div class="text-center">
+                                    <u><a class="small login-menus" name='login-menus' id= "user-forgot-password">Forgot Password?</a></u>
+                                </div>-->
+                                <!-- <div class="text-center">
+                                    <u><a class="small login-menus " name='login-menus' id="user-register">Create an Account!</a></u>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+<%-include('../public/javascripts/user-login-action.js') %>
+</script>
