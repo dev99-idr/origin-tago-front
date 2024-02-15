@@ -194,5 +194,6 @@
 	"Find Me": "태그 찾기",
 	"Are you sure you want to find tag?": "Are you sure you want to find tag?",
 	"Smart Tag Led On": "Smart Tag Led On",
-	"Smart Tag Used": "태그가 사용중이므로 삭제할 수 없습니다."
+	"Smart Tag Used": "태그가 사용중이므로 삭제할 수 없습니다.",
+	"Ble Mapping": "Ble Mapping"
 }

@@ -34,6 +34,7 @@
                                     <th class="after-none"><%= __('Modify')%></th>
                                     <th class="after-none"><%= __('Deletion')%></th>
                                     <th class="after-none"><%= __('Find Me')%></th>
+                                    <th class="after-none"><%= __('Ble Mapping')%></th>
                                 </tr>
                             </thead>
                             <tbody id="tagListBody">
@@ -559,6 +560,42 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+<div class="modal fade " id="tagZigBeeBleMappingModal" tabindex="-1" role="dialog" aria-labelledby="tagZigBeeBleMappingModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document" style="max-width: max-content;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="tagZigBeeBleMappingModalLabel">BLE Mapping</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+                <table id="tagZigBeeBleMappingModalList" class="table table-head-bg-success">
+                    <thead>
+                        <tr>
+                            <th class="after-none">Zigbee Tag Thing Id</th>
+                            <th class="after-none">Ble Tag Thing Id</th>
+                            <th class="after-none"><%= __('Deletion')%></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tagZigBeeBleMappingModalListBody">
+                    </tbody>
+                </table>
+                <table id="tagNotBleMappingModalList" class="table table-head-bg-success">
+                    <thead style='display: table; width:100%;'>
+                        <tr>
+                            <th class="after-none">Thing Id</th>
+                            <th class="after-none"><%= __('Modify')%></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tagNotBleMappingModalListBody" style='display: block; max-height: 300px; overflow-y: scroll;'>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>

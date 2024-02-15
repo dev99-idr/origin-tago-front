@@ -22,7 +22,8 @@ $(document).ready(function () {
     let chart = undefined;
     let chartSeries = [];
     let chartDataCount = 0;
-    let curDelTagIdx = 0;   
+    let curDelTagIdx = 0;
+    let select_zigbee_tag = null;
 
     const mqttMessage = (data) => {
         if(currentPage != "tag-monitoring"){
@@ -316,7 +317,6 @@ $(document).ready(function () {
 
                 bodyHtml += "   <td id ='tagConnection_" + tagList[i].tag_thing_id  + "'>"+circle+"</td>";
                 bodyHtml += "   <td id ='tag_battery_" + tagList[i].tag_thing_id + "'>" + tagList[i].variable_value + "</td>";
-                // Add tag current page number ->by jylee 230214 
                 bodyHtml += "   <td id ='tag_current_page_" + tagList[i].idx + "'>" + tagList[i].current_page + "</td>";  
                 bodyHtml += '   <td><button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-success" data-original-title="Edit Task" name = "tagDetail" id="tagDetail_' + tagList[i].idx + '"><i class="la la-2x la-pie-chart"></i></button></td>';
                 bodyHtml += '   <td><button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-simple-success" data-original-title="Edit Task" name = "tagPub" id="tagPub_' + tagList[i].idx + '"><i class="la la-2x la-print"></i></button></td>';
@@ -325,6 +325,13 @@ $(document).ready(function () {
                 //bodyHtml += '   <td><button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-simple-danger" data-original-title="Remove" name = "tagRemove" id="tagRemove_' + tagList[i].idx + '"><i class="la la-2x la-times"></i></button></td>';
                 bodyHtml += '   <td><button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-simple-danger" data-original-title="Remove" name = "tagRemove" id="tagRemove_' + tagList[i].idx + '"><i class="la la-2x la-trash"></i></button></td>';
                 bodyHtml += '   <td><button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-simple-primary" data-original-title="Edit Task" name = "tagFind" id="tagFind_' + tagList[i].idx + '"><i class="la la-2x la-map-marker"></i></button></td>';
+                
+                if(tagList[i].tag_thing_id.split("_")[0].includes("ZTAG")){
+                    bodyHtml += '   <td><button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-simple-primary" data-original-title="Edit Task" name = "bleMapping" id="bleMapping_' + tagList[i].idx + '"><i class="la la-2x la-link"></i></button></td>';
+                }else{
+                    bodyHtml += '   <td><button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-simple-primary" data-original-title="Edit Task" name = "bleMapping" id="bleMapping_' + tagList[i].idx + '"><i class="la la-2x la-minus"></i></button></td>';
+                }
+                
                 bodyHtml += "</tr>";
                 if(tagList[i].tag_thing_id.charAt(0)=='C'){
                     //thingidTopic.push("/UltraCronus/"+tagList[i].tag_thing_id+"/#")
@@ -406,6 +413,23 @@ $(document).ready(function () {
                 },{ passive: true })
             }
 
+            // Add Function Zigbee and BLE tag Mapping Search 
+            let bleMapping = document.getElementsByName('bleMapping');
+            
+            for (let i = 0; i < bleMapping.length; i++) {
+                bleMapping[i].addEventListener('click', function (e) {  // idx == smart_tag_info
+                    let idx = tagList[i].idx
+
+                    if(tagList[i].tag_thing_id.split("_")[0].includes("ZTAG")){
+                        bleMappgingTag(tagList[i]); 
+                    }else{
+                        alertPopUp('error', "ZIGBEE TAG만 매핑이 가능합니다.");
+                    }
+                                      
+                    
+                },{ passive: true })
+            }
+
             try{
                 try{
 
@@ -417,7 +441,7 @@ $(document).ready(function () {
                 }catch(e){
                     console.log("dataTable destory:"+e.toString()+":");
                 }
-                
+
                 dataTable = $('#smartTagList').DataTable({
                     "pageLength": 10,
                     "searching": true,
@@ -638,6 +662,181 @@ $(document).ready(function () {
             alertPopUp('success', "<%=__('Smart Tag Led On')%>");             //Smart Tag 삭제 완료");                       
         } , function (error) {
             //alertPopUp('error', "<%=__('Error Occurred')%>");
+            console.log("ERROR:"+error.toString()+":");           //에러가 발생했습니다. 관리자에게 연락하세요
+        });
+    }
+
+    
+    /* Add fucntion of zigbee and ble tag by led On -> by parksangmoon 240214 */
+    const bleMappgingTag = (tagList) => {       
+        let idx = tagList.idx;
+        let thingid = tagList.tag_thing_id;
+
+        getTagZigbeeBleResult(idx,thingid);
+        getNotMappingBleResult(thingid);
+
+    }
+
+    const getTagZigbeeBleResult = (idx,thingid) => {   
+
+        let options = {
+            url: "<%=global.config.apiServerUrl%>/tag-monitoring/tag-zigbee-ble",
+            type: "post",
+            headers: {
+                'Content-Type': "application/json",
+            },
+            sendData: {
+                idx: idx,
+                thingid: thingid
+            }
+        };
+
+        ajax(options, function (data) { 
+            
+            if(data.status == "OK"){
+                let result = data.data.getTagZigbeeBleResult;
+                $('#tagZigBeeBleMappingModal').modal("show");
+
+                let bodyHtml = "";
+                tagZigBeeBleMappingModalListBody.innerHTML = "";
+
+                if(result.length > 0){
+                    
+                    for (let i = 0; i < result.length; i++) {
+                        bodyHtml += " <tr>";
+                        bodyHtml += '   <td>'+result[i].zigbee_thing_id+'</td>';
+                        bodyHtml += '   <td>'+result[i].ble_thing_id+'</td>';
+                        bodyHtml += '   <td><button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-simple-danger" data-original-title="Remove" name = "tagZigBeeBleMappingModalRemove" id="tagZigBeeBleMappingModalRemove_' + result[i].idx + '"><i class="la la-2x la-trash"></i></button></td>';
+                        bodyHtml += "</tr>";
+                    }
+                    
+                }else{
+                    bodyHtml += " <tr>";
+                    bodyHtml += '   <td>'+thingid+'</td>';
+                    bodyHtml += '   <td>-</td>';
+                    bodyHtml += '   <td><button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-simple-danger" data-original-title="Remove" name = "tagZigBeeBleMappingModalRemove" id="tagZigBeeBleMappingModalRemove_' + idx + '"><i class="la la-2x la-trash"></i></button></td>';
+                    bodyHtml += "</tr>";
+                }
+
+                tagZigBeeBleMappingModalListBody.innerHTML = bodyHtml;
+
+                if(result.length > 0){
+                    let tagZigBeeBleMappingModalRemoveBtn = document.getElementsByName('tagZigBeeBleMappingModalRemove');
+            
+                    for (let i = 0; i < tagZigBeeBleMappingModalRemoveBtn.length; i++) {
+                        tagZigBeeBleMappingModalRemoveBtn[i].addEventListener('click', function (e) {  // idx == smart_tag_info
+                            let ble_thing_id = result[i].tag_thing_id
+                            debugger;
+                            removeZigbeeBleTag();                   
+                        },{ passive: true })
+                    }
+                }
+
+            }
+                                
+        } , function (error) {
+            console.log("ERROR:"+error.toString()+":");           //에러가 발생했습니다. 관리자에게 연락하세요
+            $('#tagZigBeeBleMappingModal').modal("hide");
+        });
+    }
+
+    const getNotMappingBleResult = (zigbee_thing_id) => { 
+        select_zigbee_tag = zigbee_thing_id;
+        let options = {
+            url: "<%=global.config.apiServerUrl%>/tag-monitoring/not-mapping-ble",
+            type: "post",
+            headers: {
+                'Content-Type': "application/json",
+            },
+            sendData: {
+                
+            }
+        };
+
+        ajax(options, function (data) { 
+            if(data.status == "OK"){
+                let result = data.data.getNotMappingBleResult;
+
+                let bodyHtml = "";
+                tagNotBleMappingModalListBody.innerHTML = "";
+
+                if(result.length > 0){
+                    
+                    for (let i = 0; i < result.length; i++) {
+                        bodyHtml += " <tr style='display: table; width:100%;'>";
+                        bodyHtml += '   <td style="width:63%;">'+result[i].tag_thing_id+'</td>';
+                        bodyHtml += '   <td style="width:37%;"><button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-simple-primary" data-original-title="Edit Task" name = "tagNotBleMappingModalEdit" id="tagNotBleMappingModalEdit_' + result[i].idx + '"><i class="la la-2x la-edit"></i></button></td>';
+                        bodyHtml += "</tr>";
+                    }
+                }else{
+                    bodyHtml += " <tr style='display: table; width:100%;'>";
+                    bodyHtml += '   <td style="width:63%;">-</td>';
+                    bodyHtml += '   <td style="width:37%;">-</td>';
+                    bodyHtml += "</tr>";
+                }
+
+                tagNotBleMappingModalListBody.innerHTML = bodyHtml;
+
+                if(result.length > 0){
+                    let tagNotBleMappingModalEditBtn = document.getElementsByName('tagNotBleMappingModalEdit');
+            
+                    for (let i = 0; i < tagNotBleMappingModalEditBtn.length; i++) {
+                        tagNotBleMappingModalEditBtn[i].addEventListener('click', function (e) {  // idx == smart_tag_info
+                            let ble_thing_id = result[i].tag_thing_id
+                            debugger;
+                            saveZigbeeBleTag(ble_thing_id);                   
+                        },{ passive: true })
+                    }
+                }
+
+               
+            }
+                                
+        } , function (error) {
+            console.log("ERROR:"+error.toString()+":");           //에러가 발생했습니다. 관리자에게 연락하세요
+        });
+
+        
+    }
+
+    const saveZigbeeBleTag = (ble_thing_id) => {
+        let options = {
+            url: "<%=global.config.apiServerUrl%>/tag-monitoring/save-zigbee-ble",
+            type: "post",
+            headers: {
+                'Content-Type': "application/json",
+            },
+            sendData: {
+                zigbeeThingId : select_zigbee_tag,
+                bleThingId : ble_thing_id
+            }
+        };
+
+        ajax(options, function (data) { 
+            alertPopUp("success","<%=__('Processed')%> / ");
+            $('#tagZigBeeBleMappingModal').modal("hide");
+        } , function (error) {
+            console.log("ERROR:"+error.toString()+":");           //에러가 발생했습니다. 관리자에게 연락하세요
+        });
+    }
+
+    const removeZigbeeBleTag = () => {
+        let options = {
+            url: "<%=global.config.apiServerUrl%>/tag-monitoring/remove-zigbee-ble",
+            type: "post",
+            headers: {
+                'Content-Type': "application/json",
+            },
+            sendData: {
+                zigbeeThingId : select_zigbee_tag
+            }
+        };
+
+        ajax(options, function (data) { 
+            alertPopUp("success","<%=__('Deleted')%> / ");
+            $('#tagZigBeeBleMappingModal').modal("hide");
+        } , function (error) {
+            alertPopUp("success","<%=__('Deleted')%> / ");
             console.log("ERROR:"+error.toString()+":");           //에러가 발생했습니다. 관리자에게 연락하세요
         });
     }
