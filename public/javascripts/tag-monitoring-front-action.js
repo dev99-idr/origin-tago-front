@@ -24,6 +24,7 @@ $(document).ready(function () {
     let chartDataCount = 0;
     let curDelTagIdx = 0;
     let select_zigbee_tag = null;
+    let select_ble_tag = null;
 
     const mqttMessage = (data) => {
         if(currentPage != "tag-monitoring"){
@@ -77,7 +78,6 @@ $(document).ready(function () {
             tagConnection_tmp.innerHTML = circle;            
         }
        
-
         if( wakeup_prd == 0){
             wakeup_prd = 30;
         }            
@@ -94,7 +94,6 @@ $(document).ready(function () {
         // if(timers.length !== 0){
         //     timers[indexTrOfTable].reset();
         // }
-
         for (let i = 0; i < Object.keys(jsonValue).length; i++) {   // tag list 배터리상태
             if(Object.keys(jsonValue)[i] == "batt_gauge"){
                 let tag_battery_tmp = document.getElementById("tag_battery_"+thingid);
@@ -173,7 +172,7 @@ $(document).ready(function () {
             }
             return;
         }
-      
+         
         ajax(options, function (data) {
 
             for(let i = 0 ; i < data.data.tagCollectionList.length; i++) {
@@ -190,7 +189,7 @@ $(document).ready(function () {
                                                             
                 }
             }
-                
+               
             let ckeck_conn_prd = 10 * 60 * 1000;    // change checktime to 10 minutes ->by jylee 
             for(let i = 0 ; i < data.data.tagCollectionList.length; i++) {  //any data
                 let currentTime = new Date().getTime();
@@ -268,7 +267,7 @@ $(document).ready(function () {
 
             let ckeck_conn_prd = 10 * 60 * 1000;
             let currentTime = new Date().getTime();
-
+            debugger; 
             for (let i = 0; i < tagList.length; i++) {
                 //elvis
                 if (tagList[i].tag_thing_id == 'CWTAG_29' ||
@@ -289,6 +288,7 @@ $(document).ready(function () {
                 bodyHtml += "   <td id ='tag_name_" + tagList[i].idx + "'>" + tagList[i].tag_name + "</td>";                
                 bodyHtml += "   <td id ='tag_thing_id_" + tagList[i].idx + "'>" + tagList[i].tag_thing_id + "</td>";
                  // Add tag tag_type and tag_size ->by jylee 230214 
+                 debugger;
                 bodyHtml += "   <td id ='tag_type_id_" + tagList[i].idx + "'>" + tagList[i].node_type + "</td>";
                 bodyHtml += "   <td id ='tag_size_id_" + tagList[i].idx + "'>" + tagList[i].tag_size + "</td>";                
                 bodyHtml += "   <td placeholder='" + tagList[i].tag_location + "' id ='tag_location_" + tagList[i].idx + "'>" + tagList[i].location_name + "</td>";
@@ -304,7 +304,9 @@ $(document).ready(function () {
 
                 //elvis
                 let circle = '';
-                if(parseInt((currentTime - parseInt(tagList[i].upd_time))) < ckeck_conn_prd * 3 ){
+                //if(parseInt((currentTime - parseInt(tagList[i].upd_time))) < ckeck_conn_prd * 3 ){
+                if(parseInt((currentTime - parseInt(tagList[i].update_dt))) < ckeck_conn_prd * 3 ){
+                    
                     circle =  ' <svg height="40" width="40"> ';
                     circle += '	<circle name="collectionCircle" id="collectionCircle_'+tagList[i].tag_thing_id  +'" cx="20" cy="20" r="20"  fill="green" /> ';
                     circle += ' </svg> '; 
@@ -714,7 +716,7 @@ $(document).ready(function () {
                     bodyHtml += " <tr>";
                     bodyHtml += '   <td>'+thingid+'</td>';
                     bodyHtml += '   <td>-</td>';
-                    bodyHtml += '   <td><button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-simple-danger" data-original-title="Remove" name = "tagZigBeeBleMappingModalRemove" id="tagZigBeeBleMappingModalRemove_' + idx + '"><i class="la la-2x la-trash"></i></button></td>';
+                    bodyHtml += '   <td><button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-simple-primary disabled" data-original-title="Remove" name = "tagZigBeeBleMappingModalRemove" id="tagZigBeeBleMappingModalRemove_' + idx + '"><i class="la la-2x la-trash"></i></button></td>';
                     bodyHtml += "</tr>";
                 }
 
@@ -725,8 +727,7 @@ $(document).ready(function () {
             
                     for (let i = 0; i < tagZigBeeBleMappingModalRemoveBtn.length; i++) {
                         tagZigBeeBleMappingModalRemoveBtn[i].addEventListener('click', function (e) {  // idx == smart_tag_info
-                            let ble_thing_id = result[i].tag_thing_id
-                            debugger;
+                            select_ble_tag = result[i].ble_thing_id;
                             removeZigbeeBleTag();                   
                         },{ passive: true })
                     }
@@ -783,7 +784,6 @@ $(document).ready(function () {
                     for (let i = 0; i < tagNotBleMappingModalEditBtn.length; i++) {
                         tagNotBleMappingModalEditBtn[i].addEventListener('click', function (e) {  // idx == smart_tag_info
                             let ble_thing_id = result[i].tag_thing_id
-                            debugger;
                             saveZigbeeBleTag(ble_thing_id);                   
                         },{ passive: true })
                     }
@@ -813,8 +813,12 @@ $(document).ready(function () {
         };
 
         ajax(options, function (data) { 
-            alertPopUp("success","<%=__('Processed')%> / ");
-            $('#tagZigBeeBleMappingModal').modal("hide");
+            if(data.status == "OK"){
+                // M/W에 전달
+                ultraZigbeeBle(select_zigbee_tag,ble_thing_id,"1");
+                alertPopUp("success","<%=__('Processed')%> / ");
+                $('#tagZigBeeBleMappingModal').modal("hide");
+            }
         } , function (error) {
             console.log("ERROR:"+error.toString()+":");           //에러가 발생했습니다. 관리자에게 연락하세요
         });
@@ -830,15 +834,34 @@ $(document).ready(function () {
             sendData: {
                 zigbeeThingId : select_zigbee_tag
             }
-        };
+        }
 
         ajax(options, function (data) { 
-            alertPopUp("success","<%=__('Deleted')%> / ");
-            $('#tagZigBeeBleMappingModal').modal("hide");
+            if(data.status == "OK"){
+                // M/W에 전달
+                ultraZigbeeBle(select_zigbee_tag,select_ble_tag,"0");
+                alertPopUp("success","<%=__('Deleted')%> / ");
+                $('#tagZigBeeBleMappingModal').modal("hide");
+            }
         } , function (error) {
             alertPopUp("success","<%=__('Deleted')%> / ");
             console.log("ERROR:"+error.toString()+":");           //에러가 발생했습니다. 관리자에게 연락하세요
         });
+    }
+
+    const ultraZigbeeBle = (zigbeeThingId,bleThingId,opCode) => {
+        let sendData= {
+            thingid: zigbeeThingId,
+            tid: Math.random().toString(36).substr(2, 11),
+            msg_type: "ReportData",
+            thing_type: zigbeeThingId.split("_")[0],
+            tag_data: {
+                ble_thingid: bleThingId, // ble thing id
+                op_code: opCode // 1 - 생성/수정, 0 - 삭제
+            }
+        };
+
+        mqttClient.publish("/Ultra/"+zigbeeThingId+"/zigbee_ble", JSON.stringify(sendData));
     }
 
     const addAction = (a, list) => {
@@ -2206,7 +2229,7 @@ $(document).ready(function () {
         });
 
         $(".submit").click(function () {
-
+debugger;
             let insertData = {
                 "commonData": {},
                 "collectionData": {},
@@ -2499,6 +2522,7 @@ $(document).ready(function () {
                         "tid" : Math.random().toString(36).substr(2, 11),                        
                         "eventTime" : moment(new Date().getTime()).format('YYYY-MM-DD hh:mm:ss'),
                         "thingid" : tagThingId.value,   
+                        "tagName" : tagName.value,
                         "locationCd" : tagLocation.value,                   
                         "currentPage" : tag_current_pageno,  
                         "templateList" : [
