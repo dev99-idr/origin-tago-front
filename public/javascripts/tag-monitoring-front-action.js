@@ -267,7 +267,7 @@ $(document).ready(function () {
 
             let ckeck_conn_prd = 10 * 60 * 1000;
             let currentTime = new Date().getTime();
-            debugger; 
+           
             for (let i = 0; i < tagList.length; i++) {
                 //elvis
                 if (tagList[i].tag_thing_id == 'CWTAG_29' ||
@@ -288,7 +288,7 @@ $(document).ready(function () {
                 bodyHtml += "   <td id ='tag_name_" + tagList[i].idx + "'>" + tagList[i].tag_name + "</td>";                
                 bodyHtml += "   <td id ='tag_thing_id_" + tagList[i].idx + "'>" + tagList[i].tag_thing_id + "</td>";
                  // Add tag tag_type and tag_size ->by jylee 230214 
-                 debugger;
+                 
                 bodyHtml += "   <td id ='tag_type_id_" + tagList[i].idx + "'>" + tagList[i].node_type + "</td>";
                 bodyHtml += "   <td id ='tag_size_id_" + tagList[i].idx + "'>" + tagList[i].tag_size + "</td>";                
                 bodyHtml += "   <td placeholder='" + tagList[i].tag_location + "' id ='tag_location_" + tagList[i].idx + "'>" + tagList[i].location_name + "</td>";
@@ -603,7 +603,7 @@ $(document).ready(function () {
             mqttClient.unsubscribe("/epaper/delete");
             mqttClient.subscribe("/epaper/delete");    
             curDelTagIdx = idx;
-           
+            
             let bodyJson = {
                 "tid" : Math.random().toString(36).substr(2, 11),                        
                 "eventTime" : moment(new Date().getTime()).format('YYYY-MM-DD hh:mm:ss'),
@@ -611,7 +611,7 @@ $(document).ready(function () {
                 "status" : "delete"   
             }
             mqttClient.publish("/thingid", JSON.stringify(bodyJson));           
-
+           
         })
         
     }
@@ -815,7 +815,8 @@ $(document).ready(function () {
         ajax(options, function (data) { 
             if(data.status == "OK"){
                 // M/W에 전달
-                ultraZigbeeBle(select_zigbee_tag,ble_thing_id,"1");
+                // BackEnd에서 전달하는거로 교체
+                //ultraZigbeeBle(select_zigbee_tag,ble_thing_id,"1");
                 alertPopUp("success","<%=__('Processed')%> / ");
                 $('#tagZigBeeBleMappingModal').modal("hide");
             }
@@ -832,14 +833,16 @@ $(document).ready(function () {
                 'Content-Type': "application/json",
             },
             sendData: {
-                zigbeeThingId : select_zigbee_tag
+                zigbeeThingId : select_zigbee_tag,
+                bleThingId : select_ble_tag
             }
         }
 
         ajax(options, function (data) { 
             if(data.status == "OK"){
                 // M/W에 전달
-                ultraZigbeeBle(select_zigbee_tag,select_ble_tag,"0");
+                // BackEnd에서 전달하는거로 교체
+                //ultraZigbeeBle(select_zigbee_tag,select_ble_tag,"0");
                 alertPopUp("success","<%=__('Deleted')%> / ");
                 $('#tagZigBeeBleMappingModal').modal("hide");
             }
@@ -2229,7 +2232,7 @@ $(document).ready(function () {
         });
 
         $(".submit").click(function () {
-debugger;
+
             let insertData = {
                 "commonData": {},
                 "collectionData": {},
